@@ -163,8 +163,8 @@ void FServerModePlayMenuModule::OnBeginPIE(const bool bIsSimulating) {
 			    std::make_shared<ServerProcess>(ServerMap.MapName, Port);
 			if (!ServerProcessPtr->IsValid()) {
 				UE_LOG(LogServerModePlayMenu, Error,
-				       TEXT("SMT_SERVER_PROCESS_LAUNCH_FAILED requested_port=%d rollback_count=%d"),
-				       Port, static_cast<int32>(ServerProcesses.size()));
+				       TEXT("SMT_SERVER_PROCESS_LAUNCH_FAILED map=%s requested_port=%d rollback_count=%d final_managed_server_count=0"),
+				       *ServerMap.MapName, Port, static_cast<int32>(ServerProcesses.size()));
 				ServerProcesses.clear();
 				return;
 			}

@@ -30,7 +30,7 @@ void FServerManageLibraryModule::StartupModule()
 	if (!LexTryParseString(ExpectedServerPort, *ExpectedPortText) ||
 	    ExpectedServerPort < 1 || ExpectedServerPort > 65535) {
 		UE_LOG(LogServerManageLibrary, Error,
-		       TEXT("SMT_PORT_VALIDATION_FAILED expected_port=%s actual_port=unknown world=unknown pid=%u reason=invalid_expected_port"),
+		       TEXT("SMT_PORT_VALIDATION_FAILED expected_port=%s actual_port=unknown world=unknown pid=%u action=request_clean_exit requested_status=2 reason=invalid_expected_port"),
 		       *ExpectedPortText, FPlatformProcess::GetCurrentProcessId());
 		FPlatformMisc::RequestExitWithStatus(
 		    false, 2, TEXT("ServerManageExpectedPort is invalid"));
@@ -82,7 +82,7 @@ bool FServerManageLibraryModule::ValidateExpectedServerPort(float DeltaTime) {
 		}
 
 		UE_LOG(LogServerManageLibrary, Error,
-		       TEXT("SMT_PORT_VALIDATION_FAILED expected_port=%d actual_port=%d world=%s pid=%u"),
+		       TEXT("SMT_PORT_VALIDATION_FAILED expected_port=%d actual_port=%d world=%s pid=%u action=request_clean_exit requested_status=2 reason=port_mismatch"),
 		       ExpectedServerPort, ActualServerPort, *World->GetName(), ProcessId);
 		FPlatformMisc::RequestExitWithStatus(
 		    false, 2, TEXT("ServerManageExpectedPort does not match bound port"));

@@ -4,17 +4,17 @@ Verification date: 2026-07-23 (Asia/Tokyo)
 
 This report records the Blueprint-only clean-exit and Server lifecycle verification requested for the existing `fix/ue58-uht-categories` branch. Source code was not changed. The only repository file changed by this phase is this report. All host projects, scripts, logs, JSON, monitor evidence, and package copies were kept outside the repository.
 
-## 1. Verification execution status — PASS
+## 1. Verification execution status — PARTIAL
 
 All requested verification runners reached terminal results:
 
 - the existing short-root BuildPlugin package was reused after exact SHA-256 verification;
 - Blueprint-only plugin compatibility passed;
 - Blueprint-only clean exit passed without force termination;
-- Normal PIE, Simulate, and ORPHAN each reached a clean terminal result;
-- each lifecycle run observed both requested `UnrealEditor.exe -server` children, actual UDP ports 7777 and 7778, parent exit code 0, no forced cleanup, and final child count 0.
+- the initial Normal PIE, Simulate, and ORPHAN observations reached clean terminal results, but are superseded as acceptance evidence by the strict rerun below;
+- the authoritative strict rerun passed PIE and Simulate, while ORPHAN failed because no single snapshot contained actual UDP 7777 for the requested-7777 child.
 
-The execution status is PASS because the requested verification was completed. Product/Fab readiness remains FAIL because the package is still missing required Fab structure and real-game-project integration and packaged-executable execution were not tested.
+The execution status is PARTIAL because one authoritative strict lifecycle mode failed its acceptance predicate. Product/Fab readiness remains FAIL because the package is still missing required Fab structure and real-game-project integration and packaged-executable execution were not tested.
 
 ## 2. Product readiness status — FAIL
 
@@ -203,7 +203,11 @@ The clean-exit harness used no `-ExecCmds=Quit`.
 - stdout/stderr were captured separately; stderr size was 0
 - log reached `LogExit: Exiting.` and closed normally
 
-## 13. Normal PIE lifecycle — PASS
+## 13. Initial lifecycle observation — superseded as acceptance evidence
+
+Status: `OBSERVED_PASS_SUPERSEDED`.
+
+This initial observation is retained but is not authoritative for acceptance because its harness did not require the two-child/actual-port condition in the PASS predicate.
 
 The lifecycle Python result was PASS and the parent exited normally.
 
@@ -217,7 +221,11 @@ The lifecycle Python result was PASS and the parent exited normally.
 
 The Python state transitions reached play start, held play for 15 seconds, ended play, waited 10 seconds, and requested editor quit.
 
-## 14. Simulate lifecycle — PASS
+## 14. Initial Simulate observation — superseded as acceptance evidence
+
+Status: `OBSERVED_PASS_SUPERSEDED`.
+
+This initial observation is retained but is not authoritative for acceptance because its harness did not require the two-child/actual-port condition in the PASS predicate.
 
 The lifecycle Python result was PASS and the parent exited normally.
 
@@ -231,7 +239,11 @@ The lifecycle Python result was PASS and the parent exited normally.
 
 The start operation used `editor_play_simulate()`; end, wait, and quit completed normally.
 
-## 15. Editor shutdown ORPHAN lifecycle — PASS
+## 15. Initial Editor shutdown ORPHAN observation — superseded as acceptance evidence
+
+Status: `OBSERVED_PASS_SUPERSEDED`.
+
+This initial observation is retained but is not authoritative for acceptance because its harness did not include explicit 10-second post-parent-exit monitoring.
 
 The ORPHAN Python result was PASS. The script did not call `editor_request_end_play()`; it requested editor quit while the play state was active.
 
@@ -1029,13 +1041,538 @@ The first lifecycle harness iteration used multiline JSON for monitor records an
 - start HEAD: `c58810a98d58299777f089bcc59f794e1c6ed5ac`
 - end HEAD: supplied with the report commit in the delivery result
 - package root: `D:\T\S58-20260723-131534\P`
-- verification root: `D:\T\S58L-20260723-135846`
+- strict verification root: `D:\T\S58S-20260723-144412`
 - BuildPlugin 3target result: PASS / PASS / PASS
 - Blueprint load compatibility: PASS
 - Blueprint clean exit: PASS; PID 65416; exit 0; marker PASS; timeout false
-- PIE: PASS; parent 37972; children 65612/57904; requested/actual 7777/7778; cleanup complete
-- Simulate: PASS; parent 21916; children 17188/59692; requested/actual 7777/7778; cleanup complete
-- ORPHAN: PASS; parent 32604; children 30428/59952; requested/actual 7777/7778; orphan count 0; cleanup complete
+- strict PIE: PASS; parent 55552; children 43804/65364; requested/actual 7777/7778; cleanup complete
+- strict Simulate: PASS; parent 50388; children 17468/42480; requested/actual 7777/7778; cleanup complete
+- strict ORPHAN: FAIL; parent 58892; observed children 37460/50540; requested 7777/7778; actual 7777 was not observed in the accepted concurrent snapshot; post-parent cleanup complete
 - final target process count: 0
 - changed file: `Docs/Verification/FabPostCategory-UE5.8-Win64.md`
+- Verification execution status: PARTIAL
 - Product readiness status: FAIL
+
+## 23. Strict lifecycle acceptance rerun — PARTIAL
+
+Authoritative strict verification root: `D:\T\S58S-20260723-144412`.
+
+The strict harness preserved the existing startup, process filtering, 0.5-second compact-JSONL monitoring, and exact-target cleanup behavior. Its acceptance status is the logical AND of the Python result, same-snapshot two-child/actual-port acceptance, parent exit, cleanup, and ORPHAN post-parent-exit acceptance.
+
+### PIE — STRICT_PASS
+
+- status: `PASS`
+- parent PID / exit code: `55552` / `0`
+- accepted concurrent snapshot: `2026-07-23T05:52:47Z` (displayed local time in the JSON as `07/23/2026 05:52:47`)
+- accepted child count: `2`
+- child PID `43804`, ParentProcessId `55552`, requested `7777`, actual `7777`
+- child PID `65364`, ParentProcessId `55552`, requested `7778`, actual `7778`
+- first/last seen: PID 43804 `05:52:36`/`05:52:49` UTC; PID 65364 `05:52:36`/`05:52:49` UTC
+- Python lifecycle fields: PASS; play request/start/end/quit fields all present; play start/end/PASS transitions present
+- timeout: `False`
+- forced parent cleanup: `False`
+- forced child cleanup: `False`
+- final target process count: `0`
+
+### SIMULATE — STRICT_PASS
+
+- status: `PASS`
+- parent PID / exit code: `50388` / `0`
+- accepted concurrent snapshot: `2026-07-23T05:53:59Z` (displayed local time in the JSON as `07/23/2026 05:53:59`)
+- accepted child count: `2`
+- child PID `17468`, ParentProcessId `50388`, requested `7777`, actual `7777`
+- child PID `42480`, ParentProcessId `50388`, requested `7778`, actual `7778`
+- first/last seen: PID 17468 `05:53:48`/`05:54:02` UTC; PID 42480 `05:53:48`/`05:54:02` UTC
+- Python lifecycle fields: PASS; play request/start/end/quit fields all present; play start/end/PASS transitions present
+- timeout: `False`
+- forced parent cleanup: `False`
+- forced child cleanup: `False`
+- final target process count: `0`
+
+### ORPHAN — FAIL
+
+- status: `FAIL`
+- parent PID / exit code: `58892` / `0`
+- observed child PID `37460`, ParentProcessId `58892`, requested `7777`, actual `7777` not observed in any accepted concurrent snapshot
+- observed child PID `50540`, ParentProcessId `58892`, requested `7778`, actual `7778`
+- unique child PID first/last: PID 37460 `05:55:02`/`05:55:15` UTC; PID 50540 `05:55:02`/`05:55:15` UTC
+- accepted concurrent snapshot: none
+- Python lifecycle fields: PASS; play request/start/quit present; end request and play end null; PASS state present
+- strict acceptance error: `No single snapshot satisfied exact two-child, parent-PID, requested-port, and actual-port acceptance`
+- parent exit observed: `2026-07-23T05:55:21Z`
+- post-parent observation started: `2026-07-23T05:55:21Z`
+- post-parent observation ended: `2026-07-23T05:55:44Z`
+- post-parent duration: `23.136` seconds
+- post-parent poll count: `19`
+- post-parent child count array: `0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0`
+- post-parent max child count: `0`
+- post-parent all-zero: `True`
+- timeout: `False`
+- forced parent cleanup: `False`
+- forced child cleanup: `False`
+- final target process count: `0`
+
+ORPHAN therefore remains FAIL even though its parent-exit observation and cleanup predicates passed: the strict rule requires a single concurrent snapshot with actual UDP 7777 and 7778, and that snapshot did not occur.
+
+## 24. Strict evidence hashes — PASS
+
+All evidence below is under `D:\T\S58S-20260723-144412` unless otherwise stated.
+
+| Evidence | SHA-256 |
+| --- | --- |
+| `Lifecycle.py` | `41E20A4BA3E663D054BEBDD937EAF2272130D981EE6B1CEE3B685925B99EA8F3` |
+| `RunLifecycleStrict.ps1` | `8488A7A291FD42ADA9B1D1A0E4E9A96B830DFFB3C93FDBF375AB500E64BCA3DF` |
+| `PIE.result.json` | `1E7F288948A402BEF2E6A6312C293C8331F4142EBDA83FC9CE698BBB582664BB` |
+| `PIE.strict-summary.json` | `AB336226956ABA49FF3A2F5D3DDEAB89C8896DE1DF4DBA4E374671E288FC18CB` |
+| `PIE.log` | `B2BE5A928FA37E94A0BA41B94C9F7043A930ADDF630A3A01D040A505F17DCA84` |
+| `PIE.stdout.txt` | `CE61127E83F5D198246E893B18DDC3F46B7ED0B4EB5823FA2C3F82D2924DB0B6` |
+| `PIE.stderr.txt` | `E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855` |
+| `PIE.monitor.jsonl` | `B7CF20FF28E65C42EDC6DB776DB25B4758773E4DB29FB2619AE2510FC9594C9F` |
+| `SIMULATE.result.json` | `9C3F4281E70686735E6B3238633D881AEA80452B3FB69478E6718AB59E2B91BA` |
+| `SIMULATE.strict-summary.json` | `5C31213D577EBB8EBE7BCDD12FD1B9D7AE294E823A5A93A2410E08CDFFEA4D7D` |
+| `SIMULATE.log` | `9A09446B7659D0087A844EF94A21A8220F4A0D01E1599F24F990DA29B844F7BF` |
+| `SIMULATE.stdout.txt` | `E50F501D7CDF065E1A895CDD4523F6C2727CD05AC2484524EBDB93B4E236ABFC` |
+| `SIMULATE.stderr.txt` | `E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855` |
+| `SIMULATE.monitor.jsonl` | `C4765FDFA5CB363480E7EFCF0EC64773B19336FD4D9D9F44C7411F62FBE9473A` |
+| `ORPHAN.result.json` | `862031A81AA7DE2376B90674A001E0421C1B930F2FA78AD698E430A5D2DF5F99` |
+| `ORPHAN.strict-summary.json` | `ADCB1AE78B077EA4C57976301BD1081A4527EED18D46628C27D83C48529492BE` |
+| `ORPHAN.log` | `9CDA03DD7786B7A0DC5D2A94C3B736DFF016E1CC3F1E8203D833DC3489C0D33D` |
+| `ORPHAN.stdout.txt` | `33C44D7EC0CD95751D66BFD6BB6FDE57AF93C57BFEE8B43A6AC90A77B68FC8A4` |
+| `ORPHAN.stderr.txt` | `E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855` |
+| `ORPHAN.monitor.jsonl` | `64EECB72D643148AF6EB2268B156E3BCE0E24CA108DD1BD15024B9F6B9A96C5E` |
+| `H/ServerManageToolBlueprintHost.uproject` | `1D6EAF718E5516BC38FCC360102BC53E91CABDD194FADBF93D3A8CA09142049F` |
+| `H/Config/DefaultEngine.ini` | `06249E6CA3793F52A28A67BC893E82627E0EB0EFF5CAE15802984C25DD665EE6` |
+| `H/Config/DefaultEditorPerProjectUserSettings.ini` | `E2C72B8DF57840731443AA3AC34F7DDDF8E0311CD394D648840CC18E03F8753C` |
+| `StrictFinalSummary.json` | `838639A700386E4665A7027869AB79684C26E4F435353620AA5A9D6EAFB39099` |
+
+The full authoritative `Lifecycle.py` text is retained unchanged in Section 20.5 and has the SHA shown above. It was copied from `D:\T\S58L-20260723-135846\Lifecycle.py` without modification.
+
+## 25. Strict lifecycle commands
+
+```powershell
+pwsh -NoLogo -NoProfile -File "D:\T\S58S-20260723-144412\RunLifecycleStrict.ps1" -Mode PIE
+pwsh -NoLogo -NoProfile -File "D:\T\S58S-20260723-144412\RunLifecycleStrict.ps1" -Mode SIMULATE
+pwsh -NoLogo -NoProfile -File "D:\T\S58S-20260723-144412\RunLifecycleStrict.ps1" -Mode ORPHAN
+```
+
+Each command used a separate result JSON, strict summary JSON, Editor log, stdout, stderr, and compact JSONL monitor. The mode was started only after the preceding mode had zero exact host processes and unused UDP 7777/7778.
+
+## 26. `RunLifecycleStrict.ps1` authoritative全文
+
+```powershell
+param(
+    [Parameter(Mandatory = $true)]
+    [ValidateSet("PIE", "SIMULATE", "ORPHAN")]
+    [string]$Mode
+)
+
+$ErrorActionPreference = "Stop"
+
+$verifyRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$hostRoot = Join-Path $verifyRoot "H"
+$hostProject = Join-Path $hostRoot "ServerManageToolBlueprintHost.uproject"
+$hostProjectSlash = $hostProject.Replace('\', '/')
+$pythonPath = Join-Path $verifyRoot "Lifecycle.py"
+$resultPath = Join-Path $verifyRoot "$Mode.result.json"
+$summaryPath = Join-Path $verifyRoot "$Mode.strict-summary.json"
+$logPath = Join-Path $verifyRoot "$Mode.log"
+$stdoutPath = Join-Path $verifyRoot "$Mode.stdout.txt"
+$stderrPath = Join-Path $verifyRoot "$Mode.stderr.txt"
+$monitorPath = Join-Path $verifyRoot "$Mode.monitor.jsonl"
+$editorPath = "C:\Program Files\Epic Games\UE_5.8\Engine\Binaries\Win64\UnrealEditor.exe"
+$maxSeconds = if ($Mode -eq "ORPHAN") { 150 } else { 180 }
+
+function Test-HostProjectCommandLine {
+    param([string]$CommandLine)
+    return $CommandLine -and ($CommandLine.Contains($hostProject) -or $CommandLine.Contains($hostProjectSlash))
+}
+
+function Get-PortOwners {
+    $owners = @()
+    foreach ($port in @(7777, 7778)) {
+        foreach ($endpoint in @(Get-NetUDPEndpoint -LocalPort $port -ErrorAction SilentlyContinue)) {
+            $proc = Get-CimInstance Win32_Process -Filter "ProcessId=$($endpoint.OwningProcess)" -ErrorAction SilentlyContinue
+            $owners += [ordered]@{
+                local_address = $endpoint.LocalAddress
+                port = [int]$endpoint.LocalPort
+                owning_pid = [int]$endpoint.OwningProcess
+                process_name = $proc.Name
+                command_line = $proc.CommandLine
+            }
+        }
+    }
+    return @($owners)
+}
+
+function Get-CimProcesses {
+    return @(Get-CimInstance Win32_Process)
+}
+
+function Get-RequestedPort {
+    param([string]$CommandLine)
+    if ([string]::IsNullOrWhiteSpace($CommandLine)) {
+        return $null
+    }
+    $match = [regex]::Match($CommandLine, '(?i)(?:-port=|[?&]Port=|\bPort=)(\d+)')
+    if ($match.Success) {
+        return [int]$match.Groups[1].Value
+    }
+    return $null
+}
+
+function Get-TargetChildInstances {
+    param([object[]]$Processes, [int]$ParentPid)
+    return @($Processes | Where-Object {
+        $_.Name -eq "UnrealEditor.exe" -and
+        $_.ProcessId -ne $ParentPid -and
+        (Test-HostProjectCommandLine $_.CommandLine) -and
+        $_.CommandLine -match '(?i)(^|\s)-server(?:\s|$)'
+    })
+}
+
+function Convert-ProcessEvidence {
+    param([object]$CimProcess, [string]$Role)
+    $process = Get-Process -Id $CimProcess.ProcessId -ErrorAction SilentlyContinue
+    $startTime = $null
+    if ($null -ne $process) {
+        try {
+            $startTime = $process.StartTime.ToUniversalTime().ToString("o")
+        } catch {
+            $startTime = $null
+        }
+    }
+    $udpEndpoints = @(Get-NetUDPEndpoint -OwningProcess $CimProcess.ProcessId -ErrorAction SilentlyContinue | ForEach-Object {
+        [ordered]@{
+            local_address = $_.LocalAddress
+            local_port = [int]$_.LocalPort
+            remote_address = $_.RemoteAddress
+            remote_port = [int]$_.RemotePort
+            state = $_.State
+        }
+    })
+    return [ordered]@{
+        role = $Role
+        process_id = [int]$CimProcess.ProcessId
+        parent_process_id = [int]$CimProcess.ParentProcessId
+        name = $CimProcess.Name
+        command_line = $CimProcess.CommandLine
+        requested_port = Get-RequestedPort $CimProcess.CommandLine
+        actual_udp_endpoints = $udpEndpoints
+        process_start_time_utc = $startTime
+    }
+}
+
+function Get-TargetChildren {
+    $processes = Get-CimProcesses
+    return @(Get-TargetChildInstances $processes $parentPid)
+}
+
+function Get-PollSnapshot {
+    param([int]$ParentPid)
+    $processes = Get-CimProcesses
+    $parent = @($processes | Where-Object { $_.ProcessId -eq $ParentPid } | Select-Object -First 1)
+    $children = @(Get-TargetChildInstances $processes $ParentPid)
+    return [ordered]@{
+        timestamp_utc = [DateTime]::UtcNow.ToString("o")
+        mode = $Mode
+        parent_pid = $ParentPid
+        parent_process = if ($parent.Count -eq 0) { $null } else { Convert-ProcessEvidence $parent[0] "parent" }
+        child_count = $children.Count
+        children = @($children | ForEach-Object { Convert-ProcessEvidence $_ "child" })
+        udp_7777_7778_owners = @(Get-PortOwners)
+    }
+}
+
+function Update-ChildTracking {
+    param([hashtable]$Tracking, [object]$Snapshot)
+    foreach ($child in @($Snapshot.children)) {
+        $key = [string]$child.process_id
+        if (-not $Tracking.ContainsKey($key)) {
+            $Tracking[$key] = [ordered]@{
+                process_id = [int]$child.process_id
+                parent_process_id_values = @()
+                first_seen_utc = $Snapshot.timestamp_utc
+                last_seen_utc = $Snapshot.timestamp_utc
+                requested_ports = @()
+                actual_ports = @()
+            }
+        }
+        $record = $Tracking[$key]
+        $record.last_seen_utc = $Snapshot.timestamp_utc
+        if ($record.parent_process_id_values -notcontains $child.parent_process_id) {
+            $record.parent_process_id_values += [int]$child.parent_process_id
+        }
+        if ($null -ne $child.requested_port -and $record.requested_ports -notcontains $child.requested_port) {
+            $record.requested_ports += [int]$child.requested_port
+        }
+        foreach ($endpoint in @($child.actual_udp_endpoints)) {
+            if ($null -ne $endpoint -and $record.actual_ports -notcontains $endpoint.local_port) {
+                $record.actual_ports += [int]$endpoint.local_port
+            }
+        }
+    }
+}
+
+function Test-ConcurrentAcceptance {
+    param([object]$Snapshot, [int]$ParentPid)
+    $children = @($Snapshot.children)
+    if ($children.Count -ne 2) { return $false }
+    $pids = @($children | ForEach-Object { [int]$_.process_id })
+    if ($pids[0] -eq $pids[1]) { return $false }
+    if (@($children | Where-Object { $_.parent_process_id -ne $ParentPid }).Count -ne 0) { return $false }
+    if (@($children | Where-Object { $null -eq $_.requested_port }).Count -ne 0) { return $false }
+    $requested = @($children | ForEach-Object { [int]$_.requested_port } | Sort-Object)
+    if (($requested -join ',') -ne '7777,7778') { return $false }
+    $actual7777 = @($children | Where-Object { $_.requested_port -eq 7777 } | ForEach-Object { $_.actual_udp_endpoints } | Where-Object { $null -ne $_ } | ForEach-Object { [int]$_.local_port })
+    $actual7778 = @($children | Where-Object { $_.requested_port -eq 7778 } | ForEach-Object { $_.actual_udp_endpoints } | Where-Object { $null -ne $_ } | ForEach-Object { [int]$_.local_port })
+    if ($actual7777 -notcontains 7777 -or $actual7778 -notcontains 7778) { return $false }
+    $actualExpectedPorts = @($actual7777 + $actual7778)
+    if (@($actualExpectedPorts | Sort-Object -Unique).Count -ne 2) { return $false }
+    if (@($children.requested_port | Sort-Object -Unique).Count -ne 2) { return $false }
+    return $true
+}
+
+function Stop-ExactProcess {
+    param([object]$CimProcess, [string]$Role)
+    if ($null -eq $CimProcess) { return $false }
+    $valid = ($CimProcess.Name -eq "UnrealEditor.exe" -or $CimProcess.Name -eq "UnrealEditor-Cmd.exe") -and (Test-HostProjectCommandLine $CimProcess.CommandLine)
+    if ($Role -eq "child") {
+        $valid = $valid -and $CimProcess.Name -eq "UnrealEditor.exe" -and $CimProcess.CommandLine -match '(?i)(^|\s)-server(?:\s|$)'
+    }
+    if (-not $valid) { return $false }
+    $process = Get-Process -Id $CimProcess.ProcessId -ErrorAction SilentlyContinue
+    if ($null -ne $process -and -not $process.HasExited) {
+        $process.Kill()
+        $process.WaitForExit(10000)
+        return $true
+    }
+    return $false
+}
+
+function Test-RequiredField {
+    param([object]$Object, [string]$PropertyName)
+    $value = $Object.$PropertyName
+    return $null -ne $value -and -not [string]::IsNullOrWhiteSpace([string]$value)
+}
+
+function Test-PythonAcceptance {
+    param([object]$Result)
+    if ($null -eq $Result -or $Result.status -ne 'PASS') { return $false }
+    if (-not (Test-RequiredField $Result 'play_requested_at_utc')) { return $false }
+    if (-not (Test-RequiredField $Result 'play_started_at_utc')) { return $false }
+    if (-not (Test-RequiredField $Result 'quit_requested_at_utc')) { return $false }
+    $states = @($Result.state_transitions | ForEach-Object { $_.state })
+    if ($Mode -eq 'ORPHAN') {
+        return $null -eq $Result.end_requested_at_utc -and $null -eq $Result.play_ended_at_utc -and $states -contains 'HOLDING_PLAY' -and $states -contains 'PASS'
+    }
+    return (Test-RequiredField $Result 'end_requested_at_utc') -and (Test-RequiredField $Result 'play_ended_at_utc') -and $states -contains 'WAITING_FOR_PLAY_END' -and $states -contains 'WAITING_AFTER_PLAY_END' -and $states -contains 'PASS'
+}
+
+$preflightPorts = @(Get-PortOwners)
+if ($preflightPorts.Count -gt 0) {
+    $blocked = [ordered]@{
+        mode = $Mode
+        status = 'BLOCKED_PORT_IN_USE'
+        python_result_pass = $false
+        concurrent_expected_children_observed = $false
+        lifecycle_fields_pass = $false
+        parent_exit_pass = $false
+        final_process_cleanup_pass = $false
+        orphan_post_parent_exit_pass = $false
+        acceptance_errors = @('UDP 7777/7778 were already in use before mode start')
+        preflight_port_owners = $preflightPorts
+    }
+    [System.IO.File]::WriteAllText($summaryPath, ($blocked | ConvertTo-Json -Depth 12), [System.Text.UTF8Encoding]::new($false))
+    Write-Output "StrictLifecycleStatus=BLOCKED_PORT_IN_USE"
+    exit 2
+}
+
+if (Test-Path -LiteralPath $monitorPath) {
+    [System.IO.File]::Delete([System.IO.Path]::GetFullPath($monitorPath))
+}
+
+$process = [System.Diagnostics.Process]::new()
+$process.StartInfo = [System.Diagnostics.ProcessStartInfo]::new()
+$process.StartInfo.FileName = $editorPath
+$process.StartInfo.WorkingDirectory = $hostRoot
+$process.StartInfo.UseShellExecute = $false
+$process.StartInfo.CreateNoWindow = $true
+$process.StartInfo.RedirectStandardOutput = $true
+$process.StartInfo.RedirectStandardError = $true
+$process.StartInfo.ArgumentList.Add($hostProject)
+$process.StartInfo.ArgumentList.Add('-unattended')
+$process.StartInfo.ArgumentList.Add('-nop4')
+$process.StartInfo.ArgumentList.Add('-nosplash')
+$process.StartInfo.ArgumentList.Add('-nullrhi')
+$process.StartInfo.ArgumentList.Add('-stdout')
+$process.StartInfo.ArgumentList.Add('-FullStdOutLogOutput')
+$process.StartInfo.ArgumentList.Add("-ExecutePythonScript=$pythonPath")
+$process.StartInfo.ArgumentList.Add("-AbsLog=$logPath")
+$process.StartInfo.Environment['SMT_MODE'] = $Mode
+$process.StartInfo.Environment['SMT_RESULT_JSON'] = $resultPath
+
+$startedAtUtc = [DateTime]::UtcNow
+if (-not $process.Start()) { throw "Unable to start UnrealEditor.exe for $Mode" }
+$parentPid = $process.Id
+$stdoutTask = $process.StandardOutput.ReadToEndAsync()
+$stderrTask = $process.StandardError.ReadToEndAsync()
+$deadlineUtc = $startedAtUtc.AddSeconds($maxSeconds)
+$timedOut = $false
+$parentTerminationPerformed = $false
+$childCleanupPerformed = $false
+$parentExitObservedAtUtc = $null
+$postParentStartUtc = $null
+$postParentSnapshots = @()
+$acceptedSnapshot = $null
+$childTracking = @{}
+$observationCount = 0
+$lastSnapshot = $null
+
+while ([DateTime]::UtcNow -lt $deadlineUtc) {
+    if ($process.HasExited -and $null -eq $parentExitObservedAtUtc) {
+        $parentExitObservedAtUtc = [DateTime]::UtcNow
+        if ($Mode -eq 'ORPHAN') { $postParentStartUtc = $parentExitObservedAtUtc }
+    }
+    $lastSnapshot = Get-PollSnapshot $parentPid
+    Update-ChildTracking $childTracking $lastSnapshot
+    if ($null -eq $acceptedSnapshot -and (Test-ConcurrentAcceptance $lastSnapshot $parentPid)) {
+        $acceptedSnapshot = $lastSnapshot
+    }
+    [System.IO.File]::AppendAllText($monitorPath, (($lastSnapshot | ConvertTo-Json -Depth 12 -Compress) + [Environment]::NewLine), [System.Text.UTF8Encoding]::new($false))
+    $observationCount++
+    if ($Mode -eq 'ORPHAN' -and $null -ne $parentExitObservedAtUtc) {
+        $postParentSnapshots += $lastSnapshot
+    }
+    $markerExists = Test-Path -LiteralPath $resultPath -PathType Leaf
+    if ($Mode -eq 'ORPHAN' -and $null -ne $postParentStartUtc) {
+        $postDuration = ([DateTime]::UtcNow - $postParentStartUtc).TotalSeconds
+        if ($markerExists -and $postDuration -ge 10.0 -and $postParentSnapshots.Count -ge 19) { break }
+    } elseif ($Mode -ne 'ORPHAN' -and $process.HasExited -and $markerExists -and $lastSnapshot.child_count -eq 0) {
+        break
+    }
+    Start-Sleep -Milliseconds 500
+}
+
+if ($null -eq $parentExitObservedAtUtc -and $process.HasExited) {
+    $parentExitObservedAtUtc = [DateTime]::UtcNow
+    if ($Mode -eq 'ORPHAN') { $postParentStartUtc = $parentExitObservedAtUtc }
+}
+if (-not $process.HasExited -or $null -eq $acceptedSnapshot -or ($Mode -eq 'ORPHAN' -and $postParentSnapshots.Count -lt 19)) {
+    $timedOut = -not $process.HasExited
+    $lastSnapshot = Get-PollSnapshot $parentPid
+    Update-ChildTracking $childTracking $lastSnapshot
+    [System.IO.File]::AppendAllText($monitorPath, (($lastSnapshot | ConvertTo-Json -Depth 12 -Compress) + [Environment]::NewLine), [System.Text.UTF8Encoding]::new($false))
+    $parentCim = @(Get-CimProcesses | Where-Object { $_.ProcessId -eq $parentPid } | Select-Object -First 1)
+    if ($parentCim.Count -gt 0) { $parentTerminationPerformed = Stop-ExactProcess $parentCim[0] 'parent' }
+    foreach ($child in @(Get-TargetChildren)) {
+        if (Stop-ExactProcess $child 'child') { $childCleanupPerformed = $true }
+    }
+    Start-Sleep -Milliseconds 500
+    $lastSnapshot = Get-PollSnapshot $parentPid
+    Update-ChildTracking $childTracking $lastSnapshot
+    [System.IO.File]::AppendAllText($monitorPath, (($lastSnapshot | ConvertTo-Json -Depth 12 -Compress) + [Environment]::NewLine), [System.Text.UTF8Encoding]::new($false))
+}
+
+$stdoutText = $stdoutTask.GetAwaiter().GetResult()
+$stderrText = $stderrTask.GetAwaiter().GetResult()
+[System.IO.File]::WriteAllText($stdoutPath, $stdoutText, [System.Text.UTF8Encoding]::new($false))
+[System.IO.File]::WriteAllText($stderrPath, $stderrText, [System.Text.UTF8Encoding]::new($false))
+$exitCode = if ($process.HasExited) { $process.ExitCode } else { $null }
+$finalProcesses = Get-CimProcesses
+$finalParentProcesses = @($finalProcesses | Where-Object { $_.ProcessId -eq $parentPid -and $_.Name -eq 'UnrealEditor.exe' -and (Test-HostProjectCommandLine $_.CommandLine) })
+$finalChildren = @(Get-TargetChildInstances $finalProcesses $parentPid)
+$result = $null
+$resultParseError = $null
+if (Test-Path -LiteralPath $resultPath -PathType Leaf) {
+    try { $result = Get-Content -LiteralPath $resultPath -Raw | ConvertFrom-Json } catch { $resultParseError = $_.Exception.Message }
+}
+
+$pythonResultPass = Test-PythonAcceptance $result
+$lifecycleFieldsPass = $pythonResultPass
+$parentExitPass = $process.HasExited -and $exitCode -eq 0 -and -not $parentTerminationPerformed
+$finalProcessCleanupPass = $finalChildren.Count -eq 0 -and $finalParentProcesses.Count -eq 0
+$orphanPlayStartedBeforeParentExit = $false
+if ($Mode -eq 'ORPHAN' -and $null -ne $result -and $null -ne $parentExitObservedAtUtc -and (Test-RequiredField $result 'play_started_at_utc')) {
+    try {
+        $orphanPlayStartedBeforeParentExit = [DateTimeOffset]::Parse($result.play_started_at_utc).UtcDateTime -le $parentExitObservedAtUtc
+    } catch {
+        $orphanPlayStartedBeforeParentExit = $false
+    }
+}
+$postParentEndedAtUtc = if ($postParentSnapshots.Count -gt 0) { [DateTime]::UtcNow } else { $null }
+$postParentDuration = if ($null -ne $postParentStartUtc) { ([DateTime]::UtcNow - $postParentStartUtc).TotalSeconds } else { 0 }
+$postParentChildCounts = @($postParentSnapshots | ForEach-Object { [int]$_.child_count })
+$postParentAllZero = $Mode -ne 'ORPHAN' -or ($postParentChildCounts.Count -ge 19 -and @($postParentChildCounts | Where-Object { $_ -ne 0 }).Count -eq 0)
+$postParentMax = if ($postParentChildCounts.Count -eq 0) { 0 } else { ($postParentChildCounts | Measure-Object -Maximum).Maximum }
+$orphanPostParentExitPass = $Mode -ne 'ORPHAN' -or ($orphanPlayStartedBeforeParentExit -and $null -ne $parentExitObservedAtUtc -and $null -ne $postParentStartUtc -and $postParentDuration -ge 10.0 -and $postParentSnapshots.Count -ge 19 -and $postParentAllZero -and $postParentMax -eq 0 -and $finalChildren.Count -eq 0)
+$acceptanceErrors = @()
+if ($null -eq $acceptedSnapshot) { $acceptanceErrors += 'No single snapshot satisfied exact two-child, parent-PID, requested-port, and actual-port acceptance' }
+if (-not $pythonResultPass) { $acceptanceErrors += 'Python lifecycle result fields/status/state transitions did not satisfy mode acceptance' }
+if (-not $parentExitPass) { $acceptanceErrors += 'Parent Editor did not naturally exit with code 0 without harness termination' }
+if (-not $finalProcessCleanupPass) { $acceptanceErrors += 'Final exact host parent/child process cleanup failed' }
+if (-not $orphanPostParentExitPass) { $acceptanceErrors += 'ORPHAN post-parent-exit observation did not satisfy 10-second, 19-poll, all-zero acceptance' }
+if ($Mode -eq 'ORPHAN' -and -not $orphanPlayStartedBeforeParentExit) { $acceptanceErrors += 'ORPHAN play start was not observed before parent Editor exit' }
+$status = if ($null -ne $acceptedSnapshot -and $pythonResultPass -and $parentExitPass -and $finalProcessCleanupPass -and $orphanPostParentExitPass) { 'PASS' } else { 'FAIL' }
+$acceptedChildren = if ($null -ne $acceptedSnapshot) { @($acceptedSnapshot.children) } else { @() }
+$uniqueTracking = @($childTracking.Values | Sort-Object process_id)
+$summary = [ordered]@{
+    mode = $Mode
+    status = $status
+    verification_root = $verifyRoot
+    host_project = $hostProject
+    max_seconds = $maxSeconds
+    python_result_pass = $pythonResultPass
+    concurrent_expected_children_observed = $null -ne $acceptedSnapshot
+    lifecycle_fields_pass = $lifecycleFieldsPass
+    parent_exit_pass = $parentExitPass
+    final_process_cleanup_pass = $finalProcessCleanupPass
+    orphan_post_parent_exit_pass = $orphanPostParentExitPass
+    acceptance_errors = @($acceptanceErrors)
+    preflight_port_owners = $preflightPorts
+    parent_pid = $parentPid
+    parent_exit_code = $exitCode
+    parent_exit_observed_at_utc = if ($null -eq $parentExitObservedAtUtc) { $null } else { $parentExitObservedAtUtc.ToString('o') }
+    parent_termination_performed = $parentTerminationPerformed
+    child_cleanup_performed = $childCleanupPerformed
+    accepted_concurrent_snapshot = $acceptedSnapshot
+    accepted_child_pids = @($acceptedChildren | ForEach-Object { [int]$_.process_id })
+    accepted_requested_ports = @($acceptedChildren | ForEach-Object { [int]$_.requested_port } | Sort-Object)
+    accepted_actual_ports = @($acceptedChildren | ForEach-Object { $_.actual_udp_endpoints } | ForEach-Object { [int]$_.local_port } | Sort-Object -Unique)
+    accepted_parent_process_ids = @($acceptedChildren | ForEach-Object { [int]$_.parent_process_id })
+    accepted_snapshot_at_utc = if ($null -eq $acceptedSnapshot) { $null } else { $acceptedSnapshot.timestamp_utc }
+    unique_child_pids = @($uniqueTracking | ForEach-Object { [int]$_.process_id })
+    child_pid_tracking = $uniqueTracking
+    parent_exit_observation_started_at_utc = if ($null -eq $postParentStartUtc) { $null } else { $postParentStartUtc.ToString('o') }
+    post_parent_exit_observation_started_at_utc = if ($null -eq $postParentStartUtc) { $null } else { $postParentStartUtc.ToString('o') }
+    post_parent_exit_observation_ended_at_utc = if ($null -eq $postParentStartUtc) { $null } else { [DateTime]::UtcNow.ToString('o') }
+    post_parent_exit_duration_seconds = [Math]::Round($postParentDuration, 3)
+    post_parent_exit_poll_count = $postParentSnapshots.Count
+    post_parent_exit_child_counts = @($postParentChildCounts)
+    post_parent_exit_max_child_count = [int]$postParentMax
+    post_parent_exit_all_zero = $postParentAllZero
+    final_parent_process_count = $finalParentProcesses.Count
+    final_child_process_count = $finalChildren.Count
+    final_target_process_count = $finalParentProcesses.Count + $finalChildren.Count
+    final_child_processes = @($finalChildren | ForEach-Object { Convert-ProcessEvidence $_ 'child' })
+    result_path = $resultPath
+    result = $result
+    result_parse_error = $resultParseError
+    monitor_path = $monitorPath
+    log_path = $logPath
+    stdout_path = $stdoutPath
+    stderr_path = $stderrPath
+    observation_count = $observationCount
+    timed_out = $timedOut
+}
+[System.IO.File]::WriteAllText($summaryPath, ($summary | ConvertTo-Json -Depth 20), [System.Text.UTF8Encoding]::new($false))
+Write-Output "StrictLifecycleMode=$Mode"
+Write-Output "StrictLifecycleStatus=$status"
+Write-Output "StrictPythonResultPass=$pythonResultPass"
+Write-Output "StrictConcurrentChildren=$($null -ne $acceptedSnapshot)"
+Write-Output "StrictParentPID=$parentPid"
+Write-Output "StrictParentExitCode=$exitCode"
+Write-Output "StrictFinalTargetProcessCount=$($summary.final_target_process_count)"
+Write-Output "StrictSummaryPath=$summaryPath"
+if ($status -ne 'PASS') { exit 1 }
+exit 0
+```

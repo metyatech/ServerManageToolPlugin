@@ -179,17 +179,33 @@ These are separate scopes. Direct `UnrealEditor -server` success is not evidence
 
 ## 16. Blockers before implementation — FAIL
 
-The following must be resolved before Fab implementation/submission work:
+The structural requirements below are separated from the product quality gates. The Fab structural statements are based on Epic's [Fab asset file format and structure requirements](https://dev.epicgames.com/documentation/fab/asset-file-format-and-structure-requirements-in-fab). EngineVersion, DocsURL, SupportURL, and PlatformAllowList remain sales metadata and compatibility declarations in this audit; this report does not assert that Fab requires each of them structurally.
 
-1. Fix the five UE 5.8 UHT `Category` errors and rerun BuildPlugin without changing the audit baseline retroactively.
-2. Produce and verify a successful Win64 package with actual binaries; confirm `Installed`, `EngineVersion`, module contents, and all required package directories.
-3. Verify Blueprint-only loading and explicitly record missing-module, incompatible-module, compile-request, and C++ conversion outcomes.
-4. Run plugin-managed PIE, Simulate, normal Editor shutdown, and orphan-process checks with the required timeout evidence.
-5. Decide and test the intended port-conflict policy; current behavior auto-increments and leaves the conflicting launch alive.
-6. Build and verify Development Game and Shipping Game separately; prove Editor-only module exclusion and runtime dependency correctness.
-7. Replace missing Fab metadata/documentation/support information and add the absent README, Config, Content, automated tests, CI, and package script as a separate implementation phase.
-8. Remove template copyright and Build.cs comments as part of the implementation phase.
-9. Address the missing Editor delegate unregistration in `ShutdownModule()` before treating Editor lifecycle behavior as production-ready.
+### Fab submission structural requirements — FAIL
+
+- PASS — At least one code module: the plugin declares ServerModePlayMenu, ServerInfoSettingsModule, and ServerManageLibrary.
+- PASS — .uplugin: ServerManageTool.uplugin exists.
+- PASS — Source: the source module tree exists.
+- FAIL — Content: no repository Content directory exists.
+- FAIL — Config: no repository Config directory exists; the FilterPlugin.ini generated during the failed BuildPlugin run was removed and is not a product configuration.
+- BLOCKED — A plugin-only .zip was not generated or inspected because BuildPlugin failed.
+- BLOCKED — A public download link without login or individual permission was not configured or tested.
+
+Epic's current Fab documentation states that Code Plugins must contain a .uplugin, Source, Content, and Config, must be compressed into a .zip, and must use a download link that does not require permissions.
+
+### Product release quality gates — FAIL
+
+- FAIL — README and user instructions are absent.
+- FAIL — Detailed product documentation is absent.
+- FAIL — Automated tests are absent.
+- FAIL — CI is absent.
+- FAIL — Fab package generation script is absent.
+- FAIL — UE 5.8 real-device evidence is incomplete: direct editor-server launch passed, but BuildPlugin failed and plugin-managed lifecycle was blocked.
+- FAIL — The existing port-conflict behavior auto-increments a requested 17777 launch to 17779 and keeps the process alive.
+- FAIL — Editor delegates are not removed in ShutdownModule().
+- FAIL — Template copyright and Build.cs comments remain.
+
+EngineVersion, DocsURL, SupportURL, and PlatformAllowList are tracked separately as sales metadata and compatibility declarations, not as Fab structural requirements asserted by this report.
 
 ## 17. Evidence table — PASS
 
@@ -205,6 +221,28 @@ All evidence below was kept under the temporary audit root and was not committed
 | `DirectConflict-17777.log` | SHA-256 `89C516E1EE8E5D7E74A3BD45488798A2A5FA471E2C2C252403DED84C13562C9D` |
 | final process check | `0` processes containing the direct-host uproject and `-server`, 10 seconds after forced cleanup |
 | repository artifact check | generated `Config/FilterPlugin.ini` was removed after absolute-path verification; no audit artifact remains in the repository |
+
+### Review correction validation — PASS
+
+The exact script extracted from the marked Section 18 block was saved as a temporary .ps1 and executed. The original audit evidence above was not overwritten.
+
+| Review-correction evidence | Result |
+| --- | --- |
+| extracted script SHA-256 | B60C6B0C34D6E0B8453658E578086FDD132A425AF4281D852B625FB74BAC68CD |
+| validation exit code | 0 |
+| validation status | PASS |
+| validation transcript SHA-256 | FEE3788D16ECB24CCCA16251023BE165F797CAA3A65147BF221AA3A417104C0C |
+| result JSON SHA-256 | 514423D405E422FB5C1262F7A0DC3868169DCD0C466A5F38DE97BB92006AABAB |
+| validation wrapper output SHA-256 | 5FA5A95F4B8C56AF8E0E26B6FA2A3E06EE6EB2232FF84253D61DF2C14889EBF4 |
+| single server | PID 43312; requested/actual 17777/17777 |
+| multiple server A | PID 29680; requested/actual 17777/17777 |
+| multiple server B | PID 60304; requested/actual 17778/17778 |
+| conflict server | PID 18192; requested/actual 17777/17779; alive during the 30-second conflict check |
+| final target process count | 0 after the required 10-second cleanup wait |
+| server log: single | 51DCB05FA8357A019CBA0990A37E41F708B5D809689C8DF11A76B4AE2298908D |
+| server log: multi 17777 | 0D1A1C9C1B88C0B5AFCB8B1D5A77EBA622C777E77494841A3D1FD3E5B869AA63 |
+| server log: multi 17778 | 0C62C0AAD09EB7441E33FE80685BDFF1BCC43FC7F1E5385219F221B519BDBAE9 |
+| server log: conflict | AA3C61902CDBFC362D5DB0DECE3D17F8840BA946FE5B25796995AB1A10C1ABF9 |
 
 ## 18. Exact reproduction commands — PASS
 
@@ -233,29 +271,321 @@ Get-FileHash -Algorithm SHA256 -LiteralPath $buildLog
 Write-Output "BuildPluginExitCode=$buildExitCode"
 ```
 
-The direct process must be created with `ArgumentList`, not a concatenated `Arguments` string:
+The following is the complete, self-contained direct-server validation script. It creates all projects, logs, JSON, and transcript files below a new TEMP audit root. It only terminates UnrealEditor.exe processes whose name, absolute generated uproject path, and independent -server argument all match the current run.
 
+<!-- DIRECT-SERVER-SCRIPT-BEGIN -->
 ```powershell
-$startInfo = [System.Diagnostics.ProcessStartInfo]::new()
-$startInfo.FileName = "$ueRoot\Engine\Binaries\Win64\UnrealEditor.exe"
-$startInfo.UseShellExecute = $false
-$startInfo.CreateNoWindow = $true
-foreach ($argument in @(
-    $hostProject,
-    "/Engine/Maps/Entry",
-    "-Port=17777",
-    "-server",
-    "-unattended",
-    "-nullrhi",
-    "-nosplash",
-    "-log",
-    "-AbsLog=$auditRoot\DirectSingle-17777.log"
-)) {
-    [void]$startInfo.ArgumentList.Add($argument)
-}
-$process = [System.Diagnostics.Process]::new()
-$process.StartInfo = $startInfo
-[void]$process.Start()
-```
+$ErrorActionPreference = "Stop"
 
-The Blueprint-only load command, plugin-managed PIE command sequence, and Game/Shipping builds were not executed because their explicit prerequisites were blocked; they must not be represented as successful reproductions from this baseline.
+$startedProcesses = [System.Collections.Generic.List[System.Diagnostics.Process]]::new()
+$records = [System.Collections.Generic.List[object]]::new()
+$errors = [System.Collections.Generic.List[string]]::new()
+$auditRoot = $null
+$uprojectPath = $null
+$resultPath = $null
+$transcriptPath = $null
+$transcriptStarted = $false
+$scriptResult = [ordered]@{
+    Status = "RUNNING"
+    AuditRoot = $null
+    HostProject = $null
+    Processes = @()
+    FinalTargetProcessCount = $null
+    Errors = @()
+}
+
+function Add-AuditError {
+    param([string]$Message)
+    [void]$errors.Add($Message)
+}
+
+function Get-TargetProcesses {
+    param([string]$TargetUProjectPath)
+    $matches = [System.Collections.Generic.List[object]]::new()
+    $allProcesses = Get-CimInstance Win32_Process
+    foreach ($candidate in $allProcesses) {
+        $name = [string]$candidate.Name
+        $commandLine = [string]$candidate.CommandLine
+        $hasIndependentServerArgument = $commandLine -match "(?i)(^|\s)-server(?=\s|$)"
+        if ($name -eq "UnrealEditor.exe" -and
+            $commandLine.Contains($TargetUProjectPath) -and
+            $hasIndependentServerArgument) {
+            [void]$matches.Add($candidate)
+        }
+    }
+    return $matches.ToArray()
+}
+
+function Get-CommandLineByProcessId {
+    param([int]$ProcessId)
+    $deadline = [DateTime]::UtcNow.AddSeconds(10)
+    while ([DateTime]::UtcNow -lt $deadline) {
+        $processInfo = Get-CimInstance Win32_Process -Filter ("ProcessId = " + $ProcessId)
+        if ($null -ne $processInfo -and -not [string]::IsNullOrWhiteSpace([string]$processInfo.CommandLine)) {
+            return [string]$processInfo.CommandLine
+        }
+        Start-Sleep -Milliseconds 250
+    }
+    throw "Could not retrieve command line for PID $ProcessId within 10 seconds."
+}
+
+function Assert-UdpPortFree {
+    param([int]$Port)
+    $endpoints = @(Get-NetUDPEndpoint -LocalPort $Port -ErrorAction SilentlyContinue)
+    if ($endpoints.Count -ne 0) {
+        throw "UDP port $Port is already in use; no unrelated process was terminated."
+    }
+}
+
+function New-ServerProcess {
+    param(
+        [string]$Role,
+        [int]$RequestedPort,
+        [string]$LogPath
+    )
+    $arguments = @(
+        $uprojectPath,
+        "/Engine/Maps/Entry",
+        "-Port=$RequestedPort",
+        "-server",
+        "-unattended",
+        "-nullrhi",
+        "-nosplash",
+        "-log",
+        "-AbsLog=$LogPath"
+    )
+    $startInfo = [System.Diagnostics.ProcessStartInfo]::new()
+    $startInfo.FileName = Join-Path $ueRoot "Engine\Binaries\Win64\UnrealEditor.exe"
+    $startInfo.UseShellExecute = $false
+    $startInfo.CreateNoWindow = $true
+    foreach ($argument in $arguments) {
+        [void]$startInfo.ArgumentList.Add($argument)
+    }
+    $process = [System.Diagnostics.Process]::new()
+    $process.StartInfo = $startInfo
+    if (-not $process.Start()) {
+        throw "Process.Start returned false for role $Role."
+    }
+    [void]$startedProcesses.Add($process)
+    $commandLine = Get-CommandLineByProcessId -ProcessId $process.Id
+    return [pscustomobject]@{
+        Role = $Role
+        Process = $process
+        PID = $process.Id
+        RequestedPort = $RequestedPort
+        LogPath = $LogPath
+        CommandLine = $commandLine
+    }
+}
+
+function Get-ListenResult {
+    param(
+        [pscustomobject]$Server,
+        [int]$ExpectedPort,
+        [int]$TimeoutSeconds
+    )
+    $deadline = [DateTime]::UtcNow.AddSeconds($TimeoutSeconds)
+    while ([DateTime]::UtcNow -lt $deadline) {
+        if ($Server.Process.HasExited) {
+            return [pscustomobject]@{
+                Success = $false
+                ActualPort = $null
+                ListenLine = $null
+                Reason = "Process exited with code $($Server.Process.ExitCode)."
+            }
+        }
+        if (Test-Path -LiteralPath $Server.LogPath) {
+            $lines = Get-Content -LiteralPath $Server.LogPath -ErrorAction SilentlyContinue
+            foreach ($line in $lines) {
+                $socketPattern = "(?i)Created socket for bind address:\s+\S+:$ExpectedPort\b"
+                $listenPattern = "(?i)IpNetDriver listening on port\s+$ExpectedPort\b"
+                if ($line -match $socketPattern -or $line -match $listenPattern) {
+                    $actualPort = $ExpectedPort
+                    if ($line -match "(?i)listening on port\s+(\d+)\b") {
+                        $actualPort = [int]$Matches[1]
+                    } elseif ($line -match "(?i)bind address:\s+\S+:(\d+)\b") {
+                        $actualPort = [int]$Matches[1]
+                    }
+                    return [pscustomobject]@{
+                        Success = $true
+                        ActualPort = $actualPort
+                        ListenLine = $line
+                        Reason = $null
+                    }
+                }
+            }
+        }
+        Start-Sleep -Milliseconds 500
+    }
+    return [pscustomobject]@{
+        Success = $false
+        ActualPort = $null
+        ListenLine = $null
+        Reason = "Listen confirmation timed out after $TimeoutSeconds seconds."
+    }
+}
+
+function Add-ProcessRecord {
+    param(
+        [pscustomobject]$Server,
+        [pscustomobject]$ListenResult
+    )
+    [void]$records.Add([ordered]@{
+        Role = $Server.Role
+        PID = $Server.PID
+        CommandLine = $Server.CommandLine
+        RequestedPort = $Server.RequestedPort
+        ActualPort = $ListenResult.ActualPort
+        ListenLine = $ListenResult.ListenLine
+        LogPath = $Server.LogPath
+    })
+}
+
+function Stop-StartedProcess {
+    param([System.Diagnostics.Process]$Process)
+    if ($null -eq $Process) {
+        return
+    }
+    try {
+        if (-not $Process.HasExited) {
+            $Process.Kill($true)
+            [void]$Process.WaitForExit(10000)
+        }
+    } catch {
+        Add-AuditError ("Cleanup failed for PID " + $Process.Id + ": " + $_.Exception.Message)
+    }
+}
+
+try {
+    $repoRoot = (Get-Location).Path
+    $ueRoot = $env:UE_5_8_ROOT
+    if ([string]::IsNullOrWhiteSpace($ueRoot)) {
+        $ueRoot = "C:\Program Files\Epic Games\UE_5.8"
+    }
+    $ueRoot = [System.IO.Path]::GetFullPath($ueRoot)
+    $buildVersionPath = Join-Path $ueRoot "Engine\Build\Build.version"
+    $installedBuildPath = Join-Path $ueRoot "Engine\Build\InstalledBuild.txt"
+    $buildVersion = Get-Content -Raw -LiteralPath $buildVersionPath | ConvertFrom-Json
+    if ($buildVersion.MajorVersion -ne 5 -or $buildVersion.MinorVersion -ne 8) {
+        throw "UE root is not UE 5.8."
+    }
+    if (-not (Test-Path -LiteralPath $installedBuildPath -PathType Leaf)) {
+        throw "UE 5.8 InstalledBuild.txt is missing."
+    }
+    foreach ($requiredPath in @(
+        (Join-Path $ueRoot "Engine\Binaries\Win64\UnrealEditor.exe"),
+        (Join-Path $ueRoot "Engine\Binaries\Win64\UnrealEditor-Cmd.exe"),
+        (Join-Path $ueRoot "Engine\Build\BatchFiles\RunUAT.bat")
+    )) {
+        if (-not (Test-Path -LiteralPath $requiredPath -PathType Leaf)) {
+            throw "Required UE file is missing: $requiredPath"
+        }
+    }
+
+    $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
+    $auditRoot = Join-Path $env:TEMP "ServerManageToolPlugin-FabAudit-$stamp"
+    $hostRoot = Join-Path $auditRoot "ServerManageToolBlueprintHost"
+    $configRoot = Join-Path $hostRoot "Config"
+    $null = New-Item -ItemType Directory -Path $configRoot -Force
+    $uprojectPath = Join-Path $hostRoot "ServerManageToolBlueprintHost.uproject"
+    $resultPath = Join-Path $auditRoot "DirectServerValidation.json"
+    $transcriptPath = Join-Path $auditRoot "DirectServerValidation.transcript.txt"
+    $scriptResult.AuditRoot = $auditRoot
+    $scriptResult.HostProject = $uprojectPath
+
+    $projectObject = [ordered]@{
+        FileVersion = 3
+        EngineAssociation = "5.8"
+        Plugins = @()
+    }
+    $projectText = ConvertTo-Json -InputObject $projectObject -Depth 5
+    Set-Content -LiteralPath $uprojectPath -Value $projectText -Encoding utf8NoBOM
+    $newline = [Environment]::NewLine
+    $engineIni = "[/Script/EngineSettings.GameMapsSettings]" + $newline +
+        "GameDefaultMap=/Engine/Maps/Entry" + $newline +
+        "ServerDefaultMap=/Engine/Maps/Entry" + $newline
+    Set-Content -LiteralPath (Join-Path $configRoot "DefaultEngine.ini") -Value $engineIni -Encoding utf8NoBOM
+
+    $null = Start-Transcript -Path $transcriptPath -Force
+    $transcriptStarted = $true
+    Write-Output "UE root: $ueRoot"
+    Write-Output "Installed Build: $((Get-Content -Raw -LiteralPath $installedBuildPath).Trim())"
+    Write-Output "Audit root: $auditRoot"
+    Write-Output "Host project: $uprojectPath"
+
+    foreach ($port in 17777, 17778, 17779) {
+        Assert-UdpPortFree -Port $port
+    }
+
+    $singleLog = Join-Path $auditRoot "DirectSingle-17777.log"
+    $single = New-ServerProcess -Role "single" -RequestedPort 17777 -LogPath $singleLog
+    $singleListen = Get-ListenResult -Server $single -ExpectedPort 17777 -TimeoutSeconds 60
+    if (-not $singleListen.Success -or $single.Process.HasExited) {
+        throw "Single-server validation failed: $($singleListen.Reason)"
+    }
+    Add-ProcessRecord -Server $single -ListenResult $singleListen
+    Stop-StartedProcess -Process $single.Process
+
+    $multi17777 = New-ServerProcess -Role "multi-17777" -RequestedPort 17777 -LogPath (Join-Path $auditRoot "DirectMulti-17777.log")
+    $multi17778 = New-ServerProcess -Role "multi-17778" -RequestedPort 17778 -LogPath (Join-Path $auditRoot "DirectMulti-17778.log")
+    $multiListen17777 = Get-ListenResult -Server $multi17777 -ExpectedPort 17777 -TimeoutSeconds 60
+    $multiListen17778 = Get-ListenResult -Server $multi17778 -ExpectedPort 17778 -TimeoutSeconds 60
+    if (-not $multiListen17777.Success -or -not $multiListen17778.Success) {
+        throw "Multiple-server validation failed."
+    }
+    if ($multi17777.Process.HasExited -or $multi17778.Process.HasExited -or $multi17777.PID -eq $multi17778.PID) {
+        throw "Multiple-server PID/liveness validation failed."
+    }
+    Add-ProcessRecord -Server $multi17777 -ListenResult $multiListen17777
+    Add-ProcessRecord -Server $multi17778 -ListenResult $multiListen17778
+
+    $conflict = New-ServerProcess -Role "conflict-request-17777" -RequestedPort 17777 -LogPath (Join-Path $auditRoot "DirectConflict-17777.log")
+    $conflictListen = Get-ListenResult -Server $conflict -ExpectedPort 17779 -TimeoutSeconds 30
+    if (-not $conflictListen.Success -or $conflictListen.ActualPort -ne 17779 -or $conflict.Process.HasExited) {
+        throw "Port-conflict validation failed: requested 17777 did not remain alive on actual 17779."
+    }
+    Add-ProcessRecord -Server $conflict -ListenResult $conflictListen
+    $scriptResult.Status = "PASS"
+} catch {
+    $scriptResult.Status = "FAIL"
+    Add-AuditError $_.Exception.ToString()
+    Write-Error $_.Exception.ToString()
+} finally {
+    foreach ($started in $startedProcesses) {
+        Stop-StartedProcess -Process $started
+    }
+    if ($null -ne $uprojectPath) {
+        Start-Sleep -Seconds 10
+        $remaining = @(Get-TargetProcesses -TargetUProjectPath $uprojectPath)
+        $scriptResult.FinalTargetProcessCount = $remaining.Count
+        if ($remaining.Count -ne 0) {
+            $scriptResult.Status = "FAIL"
+            Add-AuditError "Final target process count was $($remaining.Count), expected 0."
+        }
+    }
+    $scriptResult.Processes = @($records.ToArray())
+    $scriptResult.Errors = @($errors.ToArray())
+    if ($null -ne $resultPath) {
+        $resultText = ConvertTo-Json -InputObject $scriptResult -Depth 10
+        Set-Content -LiteralPath $resultPath -Value $resultText -Encoding utf8NoBOM
+    }
+    if ($transcriptStarted) {
+        Stop-Transcript | Out-Null
+    }
+}
+
+Write-Output ("ValidationStatus=" + $scriptResult.Status)
+Write-Output ("FinalTargetProcessCount=" + $scriptResult.FinalTargetProcessCount)
+Write-Output ("ValidationTranscriptSHA256=" + (Get-FileHash -Algorithm SHA256 -LiteralPath $transcriptPath).Hash)
+Write-Output ("ResultJsonSHA256=" + (Get-FileHash -Algorithm SHA256 -LiteralPath $resultPath).Hash)
+$logPaths = @($records | ForEach-Object { $_.LogPath } | Sort-Object -Unique)
+foreach ($logPath in $logPaths) {
+    Write-Output ("LogSHA256 path=" + $logPath + " hash=" + (Get-FileHash -Algorithm SHA256 -LiteralPath $logPath).Hash)
+}
+if ($scriptResult.Status -ne "PASS" -or $scriptResult.FinalTargetProcessCount -ne 0) {
+    exit 1
+}
+```
+<!-- DIRECT-SERVER-SCRIPT-END -->
+
+The Blueprint-only load command, plugin-managed PIE command sequence, and Game/Shipping builds remain separately gated by BuildPlugin and host-load success; they must not be represented as successful reproductions from this baseline.

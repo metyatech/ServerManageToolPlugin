@@ -4,9 +4,18 @@
 
 #include "ISettingsModule.h"
 #include "ISettingsSection.h"
+#include "Framework/Application/SlateApplication.h"
+#include "Framework/Notifications/NotificationManager.h"
+#include "IPAddress.h"
+#include "Misc/App.h"
 #include "ServerInfoSettings.h"
 #include "ServerModeSetting.h"
+#include "SocketSubsystem.h"
+#include "Sockets.h"
 #include "ToolMenus.h"
+#include "Widgets/Notifications/SNotificationList.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogServerModePlayMenu, Log, All);
 
 static const FName ServerModePlayMenuTabName("ServerModePlayMenu");
 
@@ -17,6 +26,41 @@ public:
 	static int32 GetServerPlayMode();
 	static void  SetServerPlayMode(int32 Value);
 };
+
+namespace {
+
+bool CanBindUdpPort(const int32 Port) {
+	ISocketSubsystem* const SocketSubsystem =
+	    ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM);
+	if (SocketSubsystem == nullptr) {
+		return false;
+	}
+
+	FUniqueSocket Socket = SocketSubsystem->CreateUniqueSocket(
+	    NAME_DGram, TEXT("ServerModePlayMenuPortPreflight"), true);
+	if (!Socket.IsValid()) {
+		return false;
+	}
+
+	const TSharedRef<FInternetAddr> Address = SocketSubsystem->CreateInternetAddr();
+	Address->SetAnyAddress();
+	Address->SetPort(Port);
+
+	return Socket->SetReuseAddr(false) && Socket->Bind(*Address);
+}
+
+FString FormatPorts(const TArray<int32>& Ports) {
+	FString Result;
+	for (int32 Index = 0; Index < Ports.Num(); ++Index) {
+		if (Index > 0) {
+			Result += TEXT(",");
+		}
+		Result += FString::FromInt(Ports[Index]);
+	}
+	return Result;
+}
+
+}
 
 void FServerModePlayMenuModule::StartupModule() {
 	UToolMenus::RegisterStartupCallback(
@@ -89,15 +133,58 @@ void FServerModePlayMenuModule::OnBeginPIE(const bool bIsSimulating) {
 		const auto&       NumServerList    = ServerList.Num();
 
 		ensureAlways(ServerProcesses.empty());
+
+		TArray<int32> UnavailablePorts;
+		UnavailablePorts.Reserve(NumServerList);
+		for (int32 Index = 0; Index < NumServerList; ++Index) {
+			const int32 Port = 7777 + Index;
+			if (!CanBindUdpPort(Port)) {
+				UnavailablePorts.Add(Port);
+			}
+		}
+
+		if (UnavailablePorts.Num() > 0) {
+			UE_LOG(LogServerModePlayMenu, Error,
+			       TEXT("SMT_PORT_PREFLIGHT_FAILED unavailable_ports=%s server_count=%d started_server_count=0 rollback_count=0"),
+			       *FormatPorts(UnavailablePorts), NumServerList);
+			ShowPortConflictNotification(UnavailablePorts);
+			return;
+		}
+
+		UE_LOG(LogServerModePlayMenu, Log,
+		       TEXT("SMT_PORT_PREFLIGHT_PASSED first_port=%d last_port=%d server_count=%d"),
+		       7777, 7777 + NumServerList - 1, NumServerList);
+
 		ServerProcesses.reserve(NumServerList);
 
 		int32 Port = 7777;
 		for (const auto& ServerMap : ServerList) {
-			ServerProcesses.push_back(
-			    std::make_shared<ServerProcess>(ServerMap.MapName, Port));
+			auto ServerProcessPtr =
+			    std::make_shared<ServerProcess>(ServerMap.MapName, Port);
+			if (!ServerProcessPtr->IsValid()) {
+				UE_LOG(LogServerModePlayMenu, Error,
+				       TEXT("SMT_SERVER_PROCESS_LAUNCH_FAILED requested_port=%d rollback_count=%d"),
+				       Port, static_cast<int32>(ServerProcesses.size()));
+				ServerProcesses.clear();
+				return;
+			}
+			ServerProcesses.push_back(MoveTemp(ServerProcessPtr));
 			++Port;
 		}
 	}
+}
+
+void FServerModePlayMenuModule::ShowPortConflictNotification(
+	const TArray<int32>& UnavailablePorts) {
+	if (!FSlateApplication::IsInitialized() || FApp::IsUnattended()) {
+		return;
+	}
+
+	FNotificationInfo Notification(FText::FromString(
+	    FString::Printf(TEXT("Local Launch stopped: UDP port conflict on %s."),
+	                    *FormatPorts(UnavailablePorts))));
+	Notification.ExpireDuration = 8.0f;
+	FSlateNotificationManager::Get().AddNotification(Notification);
 }
 
 void FServerModePlayMenuModule::OnEndPIE(const bool bIsSimulating) {

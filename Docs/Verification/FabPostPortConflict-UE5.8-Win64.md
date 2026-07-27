@@ -13,22 +13,33 @@ Final verdict:
 - Atomic all-or-nothing launch — `PASS`
 - Runtime mismatch detection — `PASS`
 - Runtime clean termination — `PASS`
-- Requested exit status propagation — mismatch `EDITOR_STATUS_0_REPRODUCED`; invalid `EDITOR_STATUS_OTHER` with exit `3`
+- Editor exit-status — `EDITOR_STATUS_INCONSISTENT`
+  - mismatch path — `EDITOR_STATUS_0_REPRODUCED`, exit `0` in `5/5`
+  - invalid-marker path — `EDITOR_STATUS_OTHER`, exit `3` in `3/3`
+- Packaged server comparison — `PACKAGED_STATUS_NOT_TESTED`
 - Port conflict implementation — `PARTIAL_PACKAGED_TEST_BLOCKED`
 - Product readiness status — `FAIL`
 
 The implementation detects the mismatch, emits the complete marker, requests a
-clean exit with status `2`, preserves the holder, leaves no shifted-port
-residue, and passes matching and markerless controls. Five independent Editor
-mismatch runs reproduced exit code `0`; three independent invalid-marker runs
-reproduced exit code `3`. A temporary dedicated-server comparison was blocked
-by the installed engine distribution, so no platform-level conclusion is made.
+clean exit with status `2`, preserves the holder, leaves no shifted-port residue,
+and passes matching and markerless controls. Five independent Editor mismatch
+runs reproduced exit code `0`; three independent invalid-marker runs reproduced
+exit code `3`. The aggregate Editor result is inconsistent because the result is
+stable within each path but differs across paths. The packaged dedicated-server
+comparison was not tested because the installed engine distribution rejected the
+Server target.
 
 Product-readiness blockers remain: Fab Config is incomplete, Fab Content is
 incomplete, user documentation is incomplete, real game-project Development
 and Shipping integration is unverified, the packaged executable is unverified,
-and Editor BeginPIE/EndPIE delegate unregister is insufficient. Port-conflict
-behavior is not a blocker.
+and Editor BeginPIE/EndPIE delegate unregister is insufficient.
+
+Editor UDP preflight, atomic all-or-nothing launch, shifted-port detection, clean
+termination, holder protection, and cleanup are no longer product blockers.
+Requested exit-status propagation remains unresolved because UnrealEditor
+returned different non-2 exit codes across the mismatch and invalid-marker paths,
+and a packaged dedicated-server comparison could not be executed with the
+installed engine distribution.
 
 ## 2. Start Git state
 
@@ -405,7 +416,7 @@ D:\T\SMTPFC-20260723-201902\H\ServerManageToolPortConflictCompletionHost.uprojec
 | complete marker | `SMT_PORT_VALIDATION_FAILED expected_port=17777 actual_port=17778 world=Entry pid=75308 action=request_clean_exit requested_status=2 reason=port_mismatch` |
 | requested clean-exit status | `2` |
 | observed process exit code | `0` |
-| classification | `EDITOR_STATUS_0_REPRODUCED` for the initial single-run observation |
+| classification | `INITIAL_SINGLE_RUN_EXIT_0` |
 | timeout / forced termination | `false / false` |
 | natural terminal result | `true` |
 | holder unaffected | `true` before planned holder cleanup |
@@ -415,7 +426,8 @@ D:\T\SMTPFC-20260723-201902\H\ServerManageToolPortConflictCompletionHost.uprojec
 The requested code path is preserved exactly as
 `FPlatformMisc::RequestExitWithStatus(false, 2, ...)`. This initial single-run
 observation was superseded by the five-run repeatability section below; it is
-retained here as historical evidence and is not called a platform limitation.
+retained here as historical evidence. This is a path-specific historical result
+and not the aggregate Editor exit-status classification.
 
 ## 19. Direct matching control
 
@@ -653,20 +665,31 @@ Final classification is updated by sections 24–31:
 
 ```text
 Verification execution status — PASS
-Requested exit status propagation — EDITOR_STATUS_0_REPRODUCED for mismatch; EDITOR_STATUS_OTHER for invalid marker
+Editor exit-status — EDITOR_STATUS_INCONSISTENT
+  mismatch path — EDITOR_STATUS_0_REPRODUCED, exit 0 in 5/5
+  invalid-marker path — EDITOR_STATUS_OTHER, exit 3 in 3/3
+Packaged server — PACKAGED_STATUS_NOT_TESTED
 Port conflict implementation — PARTIAL_PACKAGED_TEST_BLOCKED
 Product readiness status — FAIL
 ```
 
-The evidence establishes repeated executable behavior for the Editor test paths,
-but the packaged-server comparison required by the fixed rule was not
-available from this installed engine distribution. No official UE platform
-limitation is asserted.
+The Editor result is `EDITOR_STATUS_INCONSISTENT`: each path is stable across
+its independent runs, but the aggregate differs across paths (`0` versus `3`).
+Both paths emitted their required markers and terminated naturally; neither
+returned the requested status `2`. The packaged-server comparison required by
+the fixed rule was not tested because the installed engine distribution rejected
+the Server target.
 
 Remaining product blockers are Fab Config, Fab Content, user documentation,
 real game-project Development/Shipping integration, packaged executable
-verification, and Editor BeginPIE/EndPIE delegate unregister. Port-conflict
-behavior is excluded from that blocker list.
+verification, and Editor BeginPIE/EndPIE delegate unregister.
+
+Editor UDP preflight, atomic all-or-nothing launch, shifted-port detection, clean
+termination, holder protection, and cleanup are no longer product blockers.
+Requested exit-status propagation remains unresolved because UnrealEditor
+returned different non-2 exit codes across the mismatch and invalid-marker paths,
+and a packaged dedicated-server comparison could not be executed with the
+installed engine distribution.
 
 ## 24. UnrealEditor mismatch exit-status repeatability
 
@@ -802,23 +825,24 @@ limitation:
 
 | Surface | Classification | Evidence |
 | --- | --- | --- |
-| Editor mismatch | `EDITOR_STATUS_0_REPRODUCED` | five runs, all exit `0` |
-| Editor invalid marker | `EDITOR_STATUS_OTHER` | three runs, all exit `3` |
+| Editor mismatch path | `EDITOR_STATUS_0_REPRODUCED` | five runs, all exit `0` |
+| Editor invalid-marker path | `EDITOR_STATUS_OTHER` | three runs, all exit `3` |
+| Editor aggregate | `EDITOR_STATUS_INCONSISTENT` | exit code differs by path: `0` versus `3` |
 | Packaged server | `PACKAGED_STATUS_NOT_TESTED` | installed engine rejected Server target |
-| Requested exit-status propagation | not propagated as `2` in either Editor path | mismatch `0`, invalid `3` |
+| Requested status 2 | `NOT_PROPAGATED` | neither Editor path returned `2` |
 
-The Editor behavioral sub-result is `PARTIAL_EDITOR_EXIT_STATUS`: mismatch
-detection, natural exit, holder protection, and cleanup pass, but Editor exit
-status `2` does not. Under the final fixed rule, because Editor exit `2` is not
-met and the packaged dedicated-server comparison is blocked, the final port
-conflict implementation result is:
+The fixed aggregate is `EDITOR_STATUS_INCONSISTENT` because the result is stable
+within each path but differs across paths. Both paths emitted their required
+markers and terminated naturally, but neither returned status `2`. Because the
+packaged dedicated-server comparison is blocked, the final port conflict
+implementation result remains:
 
 ```text
 Port conflict implementation — PARTIAL_PACKAGED_TEST_BLOCKED
 ```
 
-This phase does not claim `PASS`, `EDITOR_STATUS_2_PROPAGATED`,
-`PACKAGED_STATUS_2_PROPAGATED`, or a platform limitation.
+This phase does not claim `PASS`, `EDITOR_STATUS_2_PROPAGATED`, or
+`PACKAGED_STATUS_2_PROPAGATED`.
 
 ## 29. Additional evidence SHA-256
 
@@ -950,6 +974,20 @@ modified in the repository.
 | requested commit | `docs: clarify port mismatch exit status` |
 | push target | `origin/fix/port-conflict-fail-fast` |
 | force push | not used |
+
+Final classification:
+
+```text
+Verification execution status — PASS
+Editor UDP preflight — PASS
+Atomic all-or-nothing launch — PASS
+Runtime mismatch detection — PASS
+Runtime clean termination — PASS
+Editor exit-status — EDITOR_STATUS_INCONSISTENT
+Packaged server — PACKAGED_STATUS_NOT_TESTED
+Port conflict implementation — PARTIAL_PACKAGED_TEST_BLOCKED
+Product readiness status — FAIL
+```
 
 The report commit SHA and URL are recorded in the final task handoff after the
 commit is created. The final post-push checks must show remote HEAD equal to

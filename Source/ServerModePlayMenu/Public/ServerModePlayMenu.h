@@ -27,5 +27,7 @@ private:
 	static void UnregisterSeverInfoSetting();
 
 private:
+	FDelegateHandle BeginPIEDelegateHandle;
+	FDelegateHandle EndPIEDelegateHandle;
 	std::vector<std::shared_ptr<ServerProcess>> ServerProcesses;
 };

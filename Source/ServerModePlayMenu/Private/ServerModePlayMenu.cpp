@@ -67,14 +67,38 @@ void FServerModePlayMenuModule::StartupModule() {
 	    FSimpleMulticastDelegate::FDelegate::CreateRaw(
 	        this, &FServerModePlayMenuModule::RegisterMenus));
 
-	FEditorDelegates::BeginPIE.AddRaw(this,
-	                                  &FServerModePlayMenuModule::OnBeginPIE);
-	FEditorDelegates::EndPIE.AddRaw(this, &FServerModePlayMenuModule::OnEndPIE);
+	ensureAlwaysMsgf(
+	    !BeginPIEDelegateHandle.IsValid(),
+	    TEXT("BeginPIE delegate was already registered"));
+	if (!BeginPIEDelegateHandle.IsValid()) {
+		BeginPIEDelegateHandle = FEditorDelegates::BeginPIE.AddRaw(
+		    this, &FServerModePlayMenuModule::OnBeginPIE);
+	}
+
+	ensureAlwaysMsgf(
+	    !EndPIEDelegateHandle.IsValid(),
+	    TEXT("EndPIE delegate was already registered"));
+	if (!EndPIEDelegateHandle.IsValid()) {
+		EndPIEDelegateHandle = FEditorDelegates::EndPIE.AddRaw(
+		    this, &FServerModePlayMenuModule::OnEndPIE);
+	}
 
 	RegisterSeverInfoSetting();
 }
 
 void FServerModePlayMenuModule::ShutdownModule() {
+	if (BeginPIEDelegateHandle.IsValid()) {
+		FEditorDelegates::BeginPIE.Remove(BeginPIEDelegateHandle);
+		BeginPIEDelegateHandle.Reset();
+	}
+
+	if (EndPIEDelegateHandle.IsValid()) {
+		FEditorDelegates::EndPIE.Remove(EndPIEDelegateHandle);
+		EndPIEDelegateHandle.Reset();
+	}
+
+	ServerProcesses.clear();
+
 	UToolMenus::UnRegisterStartupCallback(this);
 
 	UToolMenus::UnregisterOwner(this);

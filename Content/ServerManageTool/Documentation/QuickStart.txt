@@ -1,0 +1,24 @@
+Server Manage Tool — Quick Start
+
+Full documentation:
+https://metyatech.github.io/unreal-plugin-docs/server-manage-tool/
+
+Packaged documentation:
+Docs/UserGuide/index.md
+
+Packaged Quick Start:
+Content/ServerManageTool/Documentation/QuickStart.txt
+
+1. Open Project Settings > Project > Servers.
+2. Add one Server List entry for each server map.
+3. Enter each map's full package name and Server Address.
+4. Select Server Mode from the Editor Play menu.
+5. Choose Project Setting or Local Launch.
+6. Use Get Server Address in your own connection flow.
+7. Use Request Server Exit only in the dedicated server process.
+
+Local Launch assigns ports from the Server List order, starting at 7777.
+The plugin checks every configured UDP port before launching any server. If
+one port is unavailable, the server group is not partially started.
+
+This plugin does not build, package, deploy, or host a production server.

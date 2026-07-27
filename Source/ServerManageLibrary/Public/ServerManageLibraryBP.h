@@ -18,9 +18,9 @@ class SERVERMANAGELIBRARY_API UServerManageLibrary
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Server Management")
 	static FString GetServerAddress(TSoftObjectPtr<UWorld> Map);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Server Management")
 	static void RequestServerExit();
 };

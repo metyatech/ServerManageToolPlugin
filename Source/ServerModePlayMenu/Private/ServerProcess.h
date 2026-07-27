@@ -13,10 +13,13 @@ public:
 
 public:
 	void Kill();
+	bool IsValid() const;
+	int32 GetRequestedPort() const;
 
 public:
 	~ServerProcess();
 
 private:
 	FProcHandle ProcessHandle;
+	int32 RequestedPort = 0;
 };

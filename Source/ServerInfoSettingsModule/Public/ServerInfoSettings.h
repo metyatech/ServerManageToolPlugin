@@ -12,10 +12,10 @@ struct SERVERINFOSETTINGSMODULE_API FServerMap {
 	GENERATED_USTRUCT_BODY()
 
 public:
-	UPROPERTY(Config, EditAnywhere)
+	UPROPERTY(Config, EditAnywhere, Category = "Server Management")
 	FString MapName;
 
-	UPROPERTY(Config, EditAnywhere)
+	UPROPERTY(Config, EditAnywhere, Category = "Server Management")
 	FString ServerAddress;
 };
 
@@ -27,6 +27,6 @@ class SERVERINFOSETTINGSMODULE_API UServerInfoSettings: public UObject {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(Config, EditAnyWhere)
+	UPROPERTY(Config, EditAnyWhere, Category = "Server Management")
 	TArray<FServerMap> ServerList;
 };

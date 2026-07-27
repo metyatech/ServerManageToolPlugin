@@ -22,9 +22,12 @@ private:
 	void        RegisterMenus();
 	void        OnBeginPIE(bool bIsSimulating);
 	void        OnEndPIE(bool bIsSimulating);
+	static void ShowPortConflictNotification(const TArray<int32>& UnavailablePorts);
 	static void RegisterSeverInfoSetting();
 	static void UnregisterSeverInfoSetting();
 
 private:
+	FDelegateHandle BeginPIEDelegateHandle;
+	FDelegateHandle EndPIEDelegateHandle;
 	std::vector<std::shared_ptr<ServerProcess>> ServerProcesses;
 };

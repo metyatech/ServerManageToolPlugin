@@ -60,7 +60,7 @@ Local Launch assigns ports from the `Server List` order, beginning at fixed base
 
 - [User guide](Docs/UserGuide/index.md)
 - [Online documentation](https://metyatech.github.io/unreal-plugin-docs/server-manage-tool/)
-- [Quick Start in the packaged Content folder](Content/Documentation/QuickStart.txt)
+- [Quick Start in the packaged Content folder](Content/ServerManageTool/Documentation/QuickStart.txt)
 
 ## Support
 

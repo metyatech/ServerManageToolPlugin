@@ -6,6 +6,9 @@ https://metyatech.github.io/unreal-plugin-docs/server-manage-tool/
 Packaged documentation:
 Docs/UserGuide/index.md
 
+Packaged Quick Start:
+Content/ServerManageTool/Documentation/QuickStart.txt
+
 1. Open Project Settings > Project > Servers.
 2. Add one Server List entry for each server map.
 3. Enter each map's full package name and Server Address.

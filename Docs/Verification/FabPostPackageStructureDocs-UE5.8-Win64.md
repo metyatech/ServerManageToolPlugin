@@ -1,5 +1,13 @@
 # Fab Package Structure and Documentation Verification — UE 5.8 Win64
 
+> Superseded for the current Fab submission candidate by
+> `FabPostContentPackLayout-UE5.8-Win64.md`.
+>
+> The candidate documented below used `Content/Documentation`. Its build,
+> runtime, documentation, and ZIP evidence is retained as historical evidence,
+> but that ZIP is no longer the current submission candidate. The current
+> candidate uses `Content/ServerManageTool/Documentation`.
+
 Verification date: 2026-07-27 (JST)
 Verification root: D:\T\SMTFAB-20260727-153034
 

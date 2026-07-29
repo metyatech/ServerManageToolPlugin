@@ -1,5 +1,12 @@
 # Release Notes
 
+## 1.1.1
+
+- Normalized the publisher metadata to lowercase `metyatech`.
+- Corrected product documentation to reflect completed UE 5.8 Win64 real C++ game-project Development and Shipping integration verification.
+- Corrected product documentation to reflect completed packaged Development and Shipping `AddressAndExit` verification.
+- Made no product behavior or Blueprint API changes.
+
 ## 1.1.0
 
 - Added UDP preflight for all configured Local Launch ports.

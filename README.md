@@ -20,10 +20,20 @@ Configure one server entry per map, choose how the editor should resolve server 
 
 ## Requirements
 
-- Unreal Engine 5.8 Win64 is the supported verification target for version 1.1.0.
+- Unreal Engine 5.8 Win64 is the supported verification target for version 1.1.1.
 - The project must already support running its game with `-server`.
 - A valid `.uproject` and maps with full Unreal package names are required.
 - Local Launch requires the Unreal Editor executable used by the project.
+
+Version 1.1.1 verification covered the following UE 5.8 Win64 paths:
+
+- Blueprint-only host plugin load.
+- Real C++ game-project Development integration.
+- Real C++ game-project Shipping integration.
+- Packaged Development `AddressAndExit` execution.
+- Packaged Shipping `AddressAndExit` execution.
+
+A dedicated `TargetType.Server` executable is not provided or verified.
 
 ## Installation
 
@@ -78,8 +88,8 @@ Open an issue with the project Unreal Engine version, plugin version, selected m
 - The project must already support `-server`.
 - The plugin does not build, package, deploy, or host a production server.
 - Do not rely on a specific operating-system exit code after shifted-port detection.
-- Real game-project Development/Shipping integration and packaged dedicated-server executable behavior remain unverified.
+- A dedicated `TargetType.Server` executable is not provided or verified.
 
 ## Version
 
-**1.1.0** adds UDP preflight, atomic all-or-nothing Local Launch, shifted-port validation, editor delegate cleanup, module-shutdown server cleanup, and Fab package documentation structure.
+**1.1.1** normalizes the publisher metadata to lowercase `metyatech` and corrects the product documentation to match the completed UE 5.8 Win64 integration and packaged execution verification. It does not change product behavior or the Blueprint API.

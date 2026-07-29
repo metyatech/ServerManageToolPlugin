@@ -23,7 +23,7 @@ The folder must contain `ServerManageTool.uplugin` at its root. Do not place the
 
 ## Supported verification target
 
-Version 1.1.1 was verified on **Unreal Engine 5.8 Win64** with a Blueprint-only host, a real C++ game project in Development and Shipping, and packaged Development and Shipping `AddressAndExit` runs. A Blueprint-only project does not need a C++ `Modules` property to load the packaged plugin. A dedicated `TargetType.Server` executable is not provided or verified.
+Version 1.1.2 was verified on **Unreal Engine 5.8 Win64** with a Blueprint-only host, a real C++ game project in Development and Shipping, and packaged Development and Shipping `AddressAndExit` runs. A Blueprint-only project does not need a C++ `Modules` property to load the packaged plugin. A dedicated `TargetType.Server` executable is not provided or verified.
 
 ## Source project rebuild
 

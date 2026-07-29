@@ -1,5 +1,12 @@
 # Release Notes
 
+## 1.1.2
+
+- Confirmed that the historical `Udon-Tobira` Git identity and the current `metyatech` identity represent the same developer.
+- Normalized Source copyright notices to `Copyright 2024-2026 metyatech. All Rights Reserved.`
+- Added repository mailmap metadata without rewriting Git history.
+- Made no product behavior or Blueprint API changes.
+
 ## 1.1.1
 
 - Normalized the publisher metadata to lowercase `metyatech`.

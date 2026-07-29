@@ -20,12 +20,12 @@ Configure one server entry per map, choose how the editor should resolve server 
 
 ## Requirements
 
-- Unreal Engine 5.8 Win64 is the supported verification target for version 1.1.1.
+- Unreal Engine 5.8 Win64 is the supported verification target for version 1.1.2.
 - The project must already support running its game with `-server`.
 - A valid `.uproject` and maps with full Unreal package names are required.
 - Local Launch requires the Unreal Editor executable used by the project.
 
-Version 1.1.1 verification covered the following UE 5.8 Win64 paths:
+Version 1.1.2 verification covered the following UE 5.8 Win64 paths:
 
 - Blueprint-only host plugin load.
 - Real C++ game-project Development integration.
@@ -92,4 +92,4 @@ Open an issue with the project Unreal Engine version, plugin version, selected m
 
 ## Version
 
-**1.1.1** normalizes the publisher metadata to lowercase `metyatech` and corrects the product documentation to match the completed UE 5.8 Win64 integration and packaged execution verification. It does not change product behavior or the Blueprint API.
+**1.1.2** confirms continuity between the historical `Udon-Tobira` Git identity and the current `metyatech` identity, normalizes Source copyright notices, and adds repository mailmap metadata without rewriting Git history. It does not change product behavior or the Blueprint API.

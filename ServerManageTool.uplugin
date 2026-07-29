@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 3,
-	"VersionName": "1.1.1",
+	"Version": 4,
+	"VersionName": "1.1.2",
 	"FriendlyName": "Server Manage Tool",
 	"Description": "Configure map-specific server addresses and launch local dedicated-server processes during Play In Editor.",
 	"Category": "Networking",

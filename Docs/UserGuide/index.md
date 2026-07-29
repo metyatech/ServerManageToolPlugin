@@ -2,7 +2,7 @@
 
 **Use this guide to configure map-specific addresses and safely launch all configured local server entries during PIE.** Local Launch is an editor workflow; it is not a production deployment system.
 
-Version: **1.1.1**
+Version: **1.1.2**
 
 ## What this plugin does
 
@@ -44,6 +44,6 @@ In Local Launch mode, the plugin checks every required UDP port before starting 
 
 ## Scope
 
-This guide covers the plugin's editor configuration, local PIE server lifecycle, and Blueprint API. It does not document building, deploying, hosting, or operating a production dedicated server. Version 1.1.1 was verified on UE 5.8 Win64 with a Blueprint-only host, a real C++ game project in Development and Shipping, and packaged Development and Shipping `AddressAndExit` runs. A dedicated `TargetType.Server` executable is not provided or verified.
+This guide covers the plugin's editor configuration, local PIE server lifecycle, and Blueprint API. It does not document building, deploying, hosting, or operating a production dedicated server. Version 1.1.2 was verified on UE 5.8 Win64 with a Blueprint-only host, a real C++ game project in Development and Shipping, and packaged Development and Shipping `AddressAndExit` runs. A dedicated `TargetType.Server` executable is not provided or verified.
 
 For the latest online copy, see the [central documentation](https://metyatech.github.io/unreal-plugin-docs/server-manage-tool/).

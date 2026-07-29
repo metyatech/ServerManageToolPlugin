@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright 2024-2026 metyatech. All Rights Reserved.
 
 #include "ServerInfoSettingsModule.h"
 

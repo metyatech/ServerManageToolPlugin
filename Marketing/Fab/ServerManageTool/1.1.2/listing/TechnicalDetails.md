@@ -36,8 +36,8 @@
 | Plugin content files in public release ZIP | 1 |
 | Packaged documentation files | 1 |
 | Public release ZIP file count | 34 |
+| Public release ZIP bytes | 169,758 |
 | Public release ZIP uncompressed bytes | 350,308 |
-| Public release ZIP compressed file bytes | 162,924 |
 
 Network Replication: Not provided by the plugin.
 

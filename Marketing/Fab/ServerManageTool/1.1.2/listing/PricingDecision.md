@@ -13,7 +13,7 @@ Use the Fab Standard License. The prices are base prices in USD; Fab may apply t
 
 - Fab requires a Personal and a Professional price for the Standard License.
 - The selected prices are within the product’s small, focused editor-plugin scope.
-- The Personal tier is for Fab’s Personal license audience; Professional is priced separately for commercial teams.
+- Personal is for buyers who have not generated more than USD 100,000 in gross revenue from commercial activity during the last 12 months. Professional is for buyers who have generated more than USD 100,000 in gross revenue from commercial activity during the last 12 months. Buyers should select the tier that matches their own revenue situation. Both tiers grant the same scope of rights.
 - The public source repository and public prebuilt release files improve inspection and onboarding, but they do not grant an open-source license or replace the Fab buyer license.
 - The package includes three modules, two Blueprint-callable functions, packaged documentation, and verified Win64 binaries.
 - The product solves a defined local PIE workflow: map-specific addresses, all-port preflight, all-or-nothing launch, runtime port validation, and managed cleanup.

@@ -21,6 +21,7 @@
 - [ ] Mature content: Not Mature.
 - [ ] Generated with AI: No.
 - [ ] Allows usage with AI: No.
+- [ ] NoAI metadata: confirm that Fab applies it from the AI-usage selection; do not assume a separate switch exists. Confirm the exact current Fab UI label at draft input.
 - [ ] Promotional content: No.
 - [ ] Forum post: No forum post.
 - [ ] Activation: Manual activation.

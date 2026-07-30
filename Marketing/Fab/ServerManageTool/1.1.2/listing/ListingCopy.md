@@ -6,7 +6,7 @@ Server Manage Tool
 
 ## Short description
 
-Configure map-specific server addresses and launch validated local server groups during Unreal Engine PIE with all-port preflight and managed cleanup.
+Configure map-specific server addresses and launch managed local server groups during Unreal Engine PIE with all-port preflight, port validation, and cleanup.
 
 ## Long description
 

@@ -1,0 +1,153 @@
+{
+  "version": "1.1.2",
+  "engine": "UE 5.8 Win64",
+  "canonical_directory": "Marketing/Fab/ServerManageTool/1.1.2",
+  "final_count": 6,
+  "total_bytes": 1710928,
+  "entries": [
+    {
+      "path": "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-Thumbnail.jpg",
+      "role": "thumbnail",
+      "dimensions": {
+        "width": 2560,
+        "height": 1440
+      },
+      "aspect_ratio": "16:9",
+      "format": "JPEG",
+      "mime": "image/jpeg",
+      "bytes": 256495,
+      "sha256": "8055E1C7ADC08E864EFB2B5213B8384CDE61CEC7C32DA9A4BF4738832653CC05",
+      "color_profile": "sRGB (no embedded ICC; RGB source)",
+      "orientation": "1 / not embedded",
+      "alpha": false,
+      "corruption_check": "PASS",
+      "preview_25_percent": "PASS",
+      "preview_50_percent": "PASS",
+      "thumbnail_crop_safe": "PASS",
+      "duplicate": false,
+      "claim": "CLAIMS_ACCURATE",
+      "privacy": "PASS",
+      "rights": "PASS"
+    },
+    {
+      "path": "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-01-Project-Settings.jpg",
+      "role": "gallery",
+      "dimensions": {
+        "width": 2560,
+        "height": 1440
+      },
+      "aspect_ratio": "16:9",
+      "format": "JPEG",
+      "mime": "image/jpeg",
+      "bytes": 295240,
+      "sha256": "82B574AA519C93B5E42473A090A1F955B033AD9316523A10D6CC162B9D31B348",
+      "color_profile": "sRGB (no embedded ICC; RGB source)",
+      "orientation": "1 / not embedded",
+      "alpha": false,
+      "corruption_check": "PASS",
+      "preview_25_percent": "PASS",
+      "preview_50_percent": "PASS",
+      "thumbnail_crop_safe": "PASS",
+      "duplicate": false,
+      "claim": "CLAIMS_ACCURATE",
+      "privacy": "PASS",
+      "rights": "PASS"
+    },
+    {
+      "path": "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-02-Blueprint-API.jpg",
+      "role": "gallery",
+      "dimensions": {
+        "width": 2560,
+        "height": 1440
+      },
+      "aspect_ratio": "16:9",
+      "format": "JPEG",
+      "mime": "image/jpeg",
+      "bytes": 336387,
+      "sha256": "B2EE5641C3AE9E7C0BDA05CA4AEA37ACF40FED550512F8ADE13936A5C81DD050",
+      "color_profile": "sRGB (no embedded ICC; RGB source)",
+      "orientation": "1 / not embedded",
+      "alpha": false,
+      "corruption_check": "PASS",
+      "preview_25_percent": "PASS",
+      "preview_50_percent": "PASS",
+      "thumbnail_crop_safe": "PASS",
+      "duplicate": false,
+      "claim": "CLAIMS_ACCURATE",
+      "privacy": "PASS",
+      "rights": "PASS"
+    },
+    {
+      "path": "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-03-Local-Launch.jpg",
+      "role": "gallery",
+      "dimensions": {
+        "width": 2560,
+        "height": 1440
+      },
+      "aspect_ratio": "16:9",
+      "format": "JPEG",
+      "mime": "image/jpeg",
+      "bytes": 274395,
+      "sha256": "6568EBD680EB2E2A179D91C271ABA785A7581BD88BD807E9CF0E8B53403C55BF",
+      "color_profile": "sRGB (no embedded ICC; RGB source)",
+      "orientation": "1 / not embedded",
+      "alpha": false,
+      "corruption_check": "PASS",
+      "preview_25_percent": "PASS",
+      "preview_50_percent": "PASS",
+      "thumbnail_crop_safe": "PASS",
+      "duplicate": false,
+      "claim": "CLAIMS_ACCURATE",
+      "privacy": "PASS",
+      "rights": "PASS"
+    },
+    {
+      "path": "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-04-Port-Conflict.jpg",
+      "role": "gallery",
+      "dimensions": {
+        "width": 2560,
+        "height": 1440
+      },
+      "aspect_ratio": "16:9",
+      "format": "JPEG",
+      "mime": "image/jpeg",
+      "bytes": 259994,
+      "sha256": "1E36D98806A5F34147A16BEA815FB4EBA65091E51B9011F9635FEC5F82B63A39",
+      "color_profile": "sRGB (no embedded ICC; RGB source)",
+      "orientation": "1 / not embedded",
+      "alpha": false,
+      "corruption_check": "PASS",
+      "preview_25_percent": "PASS",
+      "preview_50_percent": "PASS",
+      "thumbnail_crop_safe": "PASS",
+      "duplicate": false,
+      "claim": "CLAIMS_ACCURATE",
+      "privacy": "PASS",
+      "rights": "PASS"
+    },
+    {
+      "path": "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-05-Cleanup-Scope.jpg",
+      "role": "gallery",
+      "dimensions": {
+        "width": 2560,
+        "height": 1440
+      },
+      "aspect_ratio": "16:9",
+      "format": "JPEG",
+      "mime": "image/jpeg",
+      "bytes": 288417,
+      "sha256": "665B7AD84FE665B0F1D4B9EE1004E26921BB5F4E4F47ECEF98345E1238A24AE5",
+      "color_profile": "sRGB (no embedded ICC; RGB source)",
+      "orientation": "1 / not embedded",
+      "alpha": false,
+      "corruption_check": "PASS",
+      "preview_25_percent": "PASS",
+      "preview_50_percent": "PASS",
+      "thumbnail_crop_safe": "PASS",
+      "duplicate": false,
+      "claim": "CLAIMS_ACCURATE",
+      "privacy": "PASS",
+      "rights": "PASS"
+    }
+  ]
+}

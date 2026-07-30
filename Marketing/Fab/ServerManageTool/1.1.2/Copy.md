@@ -86,4 +86,4 @@ A dedicated `TargetType.Server` executable is not included.
 
 ## Claim audit
 
-All six blocks are classified `CLAIMS_ACCURATE`. The evidence is limited to UE 5.8 Win64 Editor/PIE runs, the project-local plugin package, Project Settings address lookup, port preflight, expected/actual validation, and cleanup observations. No block claims production hosting, deployment, health checks, retry, automatic restart, automatic port shifting, or guaranteed OS exit status.
+All six blocks are classified `CLAIMS_ACCURATE`. The evidence is limited to UE 5.8 Win64 Editor/PIE runs, the project-local plugin package, Project Settings address lookup, port preflight, expected/actual validation, and cleanup observations. No block claims production hosting, deployment, server readiness checks, retry, automatic restart, automatic port shifting, or guaranteed OS exit status.

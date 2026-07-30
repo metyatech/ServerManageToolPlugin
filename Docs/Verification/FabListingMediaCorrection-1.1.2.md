@@ -97,7 +97,7 @@ Status: `PASS`.
 
 ## 13. Claim audit
 
-All six images are `CLAIMS_ACCURATE`. Permitted claims remain limited to Project Settings integration, map-specific addresses, Project Setting mode, Local Launch during PIE, UDP all-port preflight, all-or-nothing launch, requested/actual port validation, End PIE and module-shutdown cleanup, Blueprint address lookup, server-process-only exit, and UE 5.8 Win64 verification. No image claims server readiness, health checks, production hosting, deployment, packaged dedicated-server generation, client auto-connect, retry, restart, port shifting, arbitrary per-server ports, or guaranteed OS exit status.
+All six images are `CLAIMS_ACCURATE`. Permitted claims remain limited to Project Settings integration, map-specific addresses, Project Setting mode, Local Launch during PIE, UDP all-port preflight, all-or-nothing launch, requested/actual port validation, End PIE and module-shutdown cleanup, Blueprint address lookup, server-process-only exit, and UE 5.8 Win64 verification. No image claims server readiness checks, production hosting, deployment, packaged dedicated-server generation, client auto-connect, retry, restart, port shifting, arbitrary per-server ports, or guaranteed OS exit status.
 
 ## 14. Rights audit
 

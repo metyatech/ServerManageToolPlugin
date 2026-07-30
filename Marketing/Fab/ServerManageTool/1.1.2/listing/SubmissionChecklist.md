@@ -45,6 +45,10 @@
 - [ ] Confirm the Standard License and both prices are selected.
 - [ ] Confirm the source repository and binary release links resolve without exposing local paths.
 - [ ] Confirm the documentation and support links are current.
+- [ ] Preview the Long Description and confirm that the Project Setting and Local Launch distinction is visible near the top.
+- [ ] Confirm that the buyer-facing Description links to the public releases page rather than displaying the direct ZIP URL or SHA-256.
+- [ ] Confirm that the direct ZIP remains entered only as the Fab Project File Link.
+- [ ] Confirm that the Current release section is short and does not repeat the complete feature list.
 - [ ] Preview the listing at normal width and inspect wrapping, link text, captions, and media order.
 - [ ] Review the listing update notice before saving changes.
 

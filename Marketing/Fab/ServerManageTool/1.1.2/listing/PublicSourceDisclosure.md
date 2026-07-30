@@ -1,29 +1,30 @@
 # Public Source and Binary Disclosure
 
-## Listing text
+## Buyer-facing listing text
 
-The source repository and prebuilt release files are publicly accessible. The repository does not grant an open-source license.
+The source repository and prebuilt releases are publicly accessible for inspection. The repository does not grant an open-source license.
 
-Purchases through Fab are provided under the Fab Standard License and directly support continued development and maintenance.
+Purchases through Fab are provided under the Fab Standard License and support continued development and maintenance.
 
-## Public links
+## Buyer-facing links
 
 - Source repository: https://github.com/metyatech/ServerManageToolPlugin
-- Public release ZIP: https://github.com/metyatech/ServerManageToolPlugin/releases/latest/download/ServerManageTool-Fab-Current.zip
-- Online documentation: https://metyatech.github.io/unreal-plugin-docs/server-manage-tool/
+- Public releases: https://github.com/metyatech/ServerManageToolPlugin/releases
+- Documentation: https://metyatech.github.io/unreal-plugin-docs/server-manage-tool/
 - Support: https://github.com/metyatech/ServerManageToolPlugin/issues
 
-## Public release ZIP evidence
+## Fab Project File Link
 
-- Expected SHA-256: C1A043C3388520446DAB93B40FEFD6CE0E05F87D94544BB28A14B98098601443.
-- The public ZIP contains one top-level ServerManageTool plugin folder.
-- The ZIP contains the ServerManageTool.uplugin descriptor, Source, Config, Content, Win64 binaries, and packaged Quick Start documentation.
-- The ZIP contains 34 files, including 17 Source files and one packaged documentation file.
-- No repository .mailmap, Docs/Verification files, PDBs, or build-intermediate directories are part of the public release ZIP.
-- The public source repository remains source-accessible but is not represented as Open Source or as granting reuse rights.
+https://github.com/metyatech/ServerManageToolPlugin/releases/latest/download/ServerManageTool-Fab-Current.zip
 
-## Buyer-facing boundary
+The Project File Link is the direct package URL entered in Fab. It does not need to appear as a raw download URL in the buyer-facing Long Description.
 
-The Fab listing must use the Fab Standard License selection. The public source and binary links are disclosure and inspection links; they do not replace the buyer license, add an OSS grant, or change the plugin’s scope.
+## Verified package evidence
 
-The verified release is an Unreal Engine 5.8 Win64 Code Plugin. It does not include a dedicated TargetType.Server executable, production hosting, deployment infrastructure, or a client auto-connect implementation.
+- SHA-256: C1A043C3388520446DAB93B40FEFD6CE0E05F87D94544BB28A14B98098601443
+- ZIP bytes: 169,758
+- ZIP files: 34
+- One top-level plugin root: ServerManageTool
+- Source, Config, Content, Win64 binaries, and packaged Quick Start documentation are included.
+
+The public repository and release links provide source and package transparency. They do not grant an open-source license, replace the Fab buyer license, or create a separate free edition.

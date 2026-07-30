@@ -1,4 +1,4 @@
-# Server Manage Tool 1.1.2 Fab listing media
+# Server Manage Tool 1.1.2 media set
 
 This directory is the canonical, editable source and final media set for the Server Manage Tool 1.1.2 Fab listing.
 

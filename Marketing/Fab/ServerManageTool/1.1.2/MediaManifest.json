@@ -3,7 +3,15 @@
   "engine": "UE 5.8 Win64",
   "canonical_directory": "Marketing/Fab/ServerManageTool/1.1.2",
   "final_count": 6,
-  "total_bytes": 1710928,
+  "total_bytes": 1614230,
+  "gallery_order": [
+    "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-Thumbnail.jpg",
+    "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-01-Project-Settings.jpg",
+    "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-02-Blueprint-API.jpg",
+    "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-03-Local-Launch.jpg",
+    "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-04-Port-Conflict.jpg",
+    "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-05-Cleanup-Scope.jpg"
+  ],
   "entries": [
     {
       "path": "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-Thumbnail.jpg",
@@ -15,19 +23,26 @@
       "aspect_ratio": "16:9",
       "format": "JPEG",
       "mime": "image/jpeg",
-      "bytes": 256495,
-      "sha256": "8055E1C7ADC08E864EFB2B5213B8384CDE61CEC7C32DA9A4BF4738832653CC05",
+      "bytes": 254120,
+      "sha256": "909A8BC451403A4EA86F0965C9DA2BE7A45B6D9C01BF9457B5836254E4055D67",
       "color_profile": "sRGB (no embedded ICC; RGB source)",
       "orientation": "1 / not embedded",
       "alpha": false,
       "corruption_check": "PASS",
       "preview_25_percent": "PASS",
       "preview_50_percent": "PASS",
-      "thumbnail_crop_safe": "PASS",
+      "crop_safe": "PASS",
       "duplicate": false,
       "claim": "CLAIMS_ACCURATE",
+      "rights": "PASS",
       "privacy": "PASS",
-      "rights": "PASS"
+      "source_assets": [
+        "source/assets/ServerManageTool-icon.png",
+        "source/assets/ue-project-settings.png"
+      ],
+      "source_screenshot_ids": [
+        "R02-project-settings-server-list-final"
+      ]
     },
     {
       "path": "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-01-Project-Settings.jpg",
@@ -39,19 +54,27 @@
       "aspect_ratio": "16:9",
       "format": "JPEG",
       "mime": "image/jpeg",
-      "bytes": 295240,
-      "sha256": "82B574AA519C93B5E42473A090A1F955B033AD9316523A10D6CC162B9D31B348",
+      "bytes": 292178,
+      "sha256": "288E7163F8A1128BFA5520313CEF1CD5EFA0D94603E539FD0C1CA79E30E85B71",
       "color_profile": "sRGB (no embedded ICC; RGB source)",
       "orientation": "1 / not embedded",
       "alpha": false,
       "corruption_check": "PASS",
       "preview_25_percent": "PASS",
       "preview_50_percent": "PASS",
-      "thumbnail_crop_safe": "PASS",
+      "crop_safe": "PASS",
       "duplicate": false,
       "claim": "CLAIMS_ACCURATE",
+      "rights": "PASS",
       "privacy": "PASS",
-      "rights": "PASS"
+      "source_assets": [
+        "source/assets/ue-project-settings.png",
+        "source/assets/ue-plugin-tree.png"
+      ],
+      "source_screenshot_ids": [
+        "R02-project-settings-server-list-final",
+        "R01-plugin-install-tree-files"
+      ]
     },
     {
       "path": "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-02-Blueprint-API.jpg",
@@ -63,19 +86,29 @@
       "aspect_ratio": "16:9",
       "format": "JPEG",
       "mime": "image/jpeg",
-      "bytes": 336387,
-      "sha256": "B2EE5641C3AE9E7C0BDA05CA4AEA37ACF40FED550512F8ADE13936A5C81DD050",
+      "bytes": 337362,
+      "sha256": "D8221F2223F6335B22D30BA0B319EE23C57675853D9AD7CFD6E8A2E5DA306527",
       "color_profile": "sRGB (no embedded ICC; RGB source)",
       "orientation": "1 / not embedded",
       "alpha": false,
       "corruption_check": "PASS",
       "preview_25_percent": "PASS",
       "preview_50_percent": "PASS",
-      "thumbnail_crop_safe": "PASS",
+      "crop_safe": "PASS",
       "duplicate": false,
       "claim": "CLAIMS_ACCURATE",
+      "rights": "PASS",
       "privacy": "PASS",
-      "rights": "PASS"
+      "source_assets": [
+        "source/assets/ue-blueprint-graph.png",
+        "source/assets/ue-blueprint-search-address.png",
+        "source/assets/ue-blueprint-search-exit.png"
+      ],
+      "source_screenshot_ids": [
+        "R03-blueprint-api-graph-compiled",
+        "BlueprintSearch-GetServerAddress",
+        "BlueprintSearch-RequestServerExit-unfiltered-2"
+      ]
     },
     {
       "path": "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-03-Local-Launch.jpg",
@@ -87,19 +120,25 @@
       "aspect_ratio": "16:9",
       "format": "JPEG",
       "mime": "image/jpeg",
-      "bytes": 274395,
-      "sha256": "6568EBD680EB2E2A179D91C271ABA785A7581BD88BD807E9CF0E8B53403C55BF",
+      "bytes": 240589,
+      "sha256": "D8B4D0C20482A28E5D9F12F5D2D1E86F5ACDE016B0F93F43B8A790606F679C08",
       "color_profile": "sRGB (no embedded ICC; RGB source)",
       "orientation": "1 / not embedded",
       "alpha": false,
       "corruption_check": "PASS",
       "preview_25_percent": "PASS",
       "preview_50_percent": "PASS",
-      "thumbnail_crop_safe": "PASS",
+      "crop_safe": "PASS",
       "duplicate": false,
       "claim": "CLAIMS_ACCURATE",
+      "rights": "PASS",
       "privacy": "PASS",
-      "rights": "PASS"
+      "source_assets": [
+        "source/assets/ue-local-launch-console.png"
+      ],
+      "source_screenshot_ids": [
+        "R06-local-launch-active-verified"
+      ]
     },
     {
       "path": "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-04-Port-Conflict.jpg",
@@ -111,19 +150,25 @@
       "aspect_ratio": "16:9",
       "format": "JPEG",
       "mime": "image/jpeg",
-      "bytes": 259994,
-      "sha256": "1E36D98806A5F34147A16BEA815FB4EBA65091E51B9011F9635FEC5F82B63A39",
+      "bytes": 256787,
+      "sha256": "CC106C6A7EA8D225CEDF905D85B322E6FEB9544C22307DA5EE18BE4A63B2700E",
       "color_profile": "sRGB (no embedded ICC; RGB source)",
       "orientation": "1 / not embedded",
       "alpha": false,
       "corruption_check": "PASS",
       "preview_25_percent": "PASS",
       "preview_50_percent": "PASS",
-      "thumbnail_crop_safe": "PASS",
+      "crop_safe": "PASS",
       "duplicate": false,
       "claim": "CLAIMS_ACCURATE",
+      "rights": "PASS",
       "privacy": "PASS",
-      "rights": "PASS"
+      "source_assets": [
+        "source/assets/ue-conflict-log.png"
+      ],
+      "source_screenshot_ids": [
+        "R07-conflict-outputlog-filtered"
+      ]
     },
     {
       "path": "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-05-Cleanup-Scope.jpg",
@@ -135,19 +180,25 @@
       "aspect_ratio": "16:9",
       "format": "JPEG",
       "mime": "image/jpeg",
-      "bytes": 288417,
-      "sha256": "665B7AD84FE665B0F1D4B9EE1004E26921BB5F4E4F47ECEF98345E1238A24AE5",
+      "bytes": 233194,
+      "sha256": "5FC5A91BAC4FBFF0E0B12CA4A4DAE848E3D16B0F90C369687F7AA536CBDA55BB",
       "color_profile": "sRGB (no embedded ICC; RGB source)",
       "orientation": "1 / not embedded",
       "alpha": false,
       "corruption_check": "PASS",
       "preview_25_percent": "PASS",
       "preview_50_percent": "PASS",
-      "thumbnail_crop_safe": "PASS",
+      "crop_safe": "PASS",
       "duplicate": false,
       "claim": "CLAIMS_ACCURATE",
+      "rights": "PASS",
       "privacy": "PASS",
-      "rights": "PASS"
+      "source_assets": [
+        "source/assets/ue-cleanup-evidence.png"
+      ],
+      "source_screenshot_ids": [
+        "R08-simulate-after-stop-verified"
+      ]
     }
   ]
 }

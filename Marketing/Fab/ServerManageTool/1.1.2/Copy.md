@@ -1,4 +1,4 @@
-# Fab listing copy
+# Listing copy
 
 ## Thumbnail
 
@@ -29,7 +29,7 @@ Install as a project-local plugin: `YourProject / Plugins / ServerManageTool`
 **Resolve Server Addresses in Blueprint**
 
 - Project Setting returns the configured address
-- Local Launch returns `127.0.0.1:7777+`
+- Local Launch returns loopback ports starting at 7777
 - Null or missing maps return an empty string
 
 Request Server Exit should only be used in the server process.
@@ -46,7 +46,13 @@ Match — Requested 7778 — Actual 7778 — Validated
 
 `SMT_PORT_PREFLIGHT_PASSED`
 
+Ports Available means the required UDP ports were available before launch.
+
 `SMT_PORT_VALIDATION_PASSED`
+
+Validated means the requested and actual bound ports matched.
+
+Actual UE 5.8 Local Launch evidence
 
 ## Gallery 04 — Port Conflict
 
@@ -69,6 +75,8 @@ No port shifting or partial launch is implied.
 Managed server processes stop when PIE ends and are cleared during module shutdown.
 
 Start PIE → 2 managed servers → End PIE → 0 managed processes → 0 UDP owners
+
+Actual post-End PIE cleanup evidence
 
 Editor / PIE only
 

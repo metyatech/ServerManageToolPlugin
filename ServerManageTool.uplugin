@@ -2,6 +2,7 @@
 	"FileVersion": 3,
 	"Version": 4,
 	"VersionName": "1.1.2",
+	"EngineVersion": "5.8.0",
 	"FriendlyName": "Server Manage Tool",
 	"Description": "Configure map-specific server addresses and launch local dedicated-server processes during Play In Editor.",
 	"Category": "Networking",
@@ -11,6 +12,9 @@
 	"MarketplaceURL": "",
 	"SupportURL": "https://github.com/metyatech/ServerManageToolPlugin/issues",
 	"CanContainContent": true,
+	"SupportedTargetPlatforms": [
+		"Win64"
+	],
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": false,
@@ -18,17 +22,26 @@
 		{
 			"Name": "ServerModePlayMenu",
 			"Type": "Editor",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
 		},
 		{
 			"Name": "ServerInfoSettingsModule",
 			"Type": "Runtime",
-			"LoadingPhase": "PreLoadingScreen"
+			"LoadingPhase": "PreLoadingScreen",
+			"PlatformAllowList": [
+				"Win64"
+			]
 		},
 		{
 			"Name": "ServerManageLibrary",
 			"Type": "Runtime",
-			"LoadingPhase": "PreLoadingScreen"
+			"LoadingPhase": "PreLoadingScreen",
+			"PlatformAllowList": [
+				"Win64"
+			]
 		}
 	]
 }

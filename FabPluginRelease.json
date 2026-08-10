@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "pluginName": "ServerManageTool",
+  "descriptorFile": "ServerManageTool.uplugin",
+  "engineVersions": [
+    "5.8"
+  ],
+  "platforms": [
+    "Win64"
+  ],
+  "distributionModules": [
+    "ServerModePlayMenu",
+    "ServerInfoSettingsModule",
+    "ServerManageLibrary"
+  ],
+  "enabledPluginDependencies": [],
+  "publisher": {
+    "name": "metyatech",
+    "url": "https://github.com/metyatech",
+    "copyrightNotice": "// Copyright 2024-2026 metyatech. All Rights Reserved."
+  },
+  "listingId": null,
+  "documentationUrl": "https://metyatech.github.io/unreal-plugin-docs/server-manage-tool/",
+  "supportUrl": "https://github.com/metyatech/ServerManageToolPlugin/issues",
+  "content": {
+    "mode": "pack",
+    "packFolder": "ServerManageTool"
+  },
+  "includeDirectories": [
+    "Config",
+    "Content",
+    "Resources",
+    "Source",
+    "Docs/UserGuide"
+  ],
+  "includeFiles": [
+    "ServerManageTool.uplugin",
+    "README.md"
+  ],
+  "requiredPackageFiles": [
+    "ServerManageTool.uplugin",
+    "Config/FilterPlugin.ini",
+    "Content/ServerManageTool/Documentation/QuickStart.txt",
+    "Resources/Icon128.png",
+    "Resources/PlaceholderButtonIcon.svg",
+    "Source/ServerModePlayMenu/ServerModePlayMenu.Build.cs",
+    "Source/ServerInfoSettingsModule/ServerInfoSettingsModule.Build.cs",
+    "Source/ServerManageLibrary/ServerManageLibrary.Build.cs",
+    "Docs/UserGuide/index.md",
+    "README.md"
+  ],
+  "customDistributionPaths": [
+    "Config",
+    "Content/ServerManageTool/Documentation",
+    "Docs/UserGuide",
+    "README.md"
+  ],
+  "thirdPartyLicenseSets": [],
+  "forbiddenPackagePatterns": [
+    "^Marketing(?:/|$)",
+    "^Docs/Verification(?:/|$)",
+    "^FabPluginRelease\\.json$",
+    "^\\.mailmap$",
+    "^(?:Binaries|Intermediate|Saved|Build|DerivedDataCache)(?:/|$)"
+  ],
+  "buildLogFailPatterns": []
+}

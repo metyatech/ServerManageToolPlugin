@@ -69,3 +69,31 @@ The three modules are:
 - The verified host matrix includes a Blueprint-only host and real C++ game-project Development and Shipping integration.
 - A dedicated TargetType.Server executable is not included or verified.
 - The package is not a server hosting service and does not provide deployment infrastructure.
+
+## Fab Portal Technical Information (copy-ready)
+
+### Features
+
+- Map-specific server addresses in Project Settings.
+- Project Setting and Local Launch modes during Play In Editor.
+- All-port UDP preflight, expected-versus-actual port validation, and managed-process cleanup.
+- Blueprint nodes for Get Server Address and Request Server Exit.
+
+### Code Modules
+
+- `ServerModePlayMenu` (Editor): Editor Play menu, PIE lifecycle, local server launch, UDP preflight, and managed cleanup.
+- `ServerInfoSettingsModule` (Runtime): Runtime project settings and server-list data.
+- `ServerManageLibrary` (Runtime): Runtime Blueprint address resolution, server-exit request, and port validation API.
+
+### Technical Information
+
+- Number of Blueprints: 0.
+- Number of C++ Classes: 3 UCLASS declarations in the shipped distribution modules.
+- Network Replicated: No. The plugin does not provide network replication; client connection, gameplay networking, and replication remain the responsibility of the host project.
+- Supported Development Platforms: Win64.
+- Supported Target Build Platforms: Win64.
+- Dependencies: None.
+- Prerequisites: Unreal Engine 5.8; a Windows 64-bit Unreal project; a project that provides its intended `-server` behavior for Local Launch.
+- Documentation: https://metyatech.github.io/unreal-plugin-docs/server-manage-tool/
+- Example Project: Not applicable. The package includes `QuickStart.txt` and `Docs/UserGuide/index.md`, and the public documentation covers setup and use.
+- Additional Notes: Code Plugin for Editor/PIE workflows. The plugin does not build, package, deploy, or host production servers, and does not include a dedicated `TargetType.Server` executable.

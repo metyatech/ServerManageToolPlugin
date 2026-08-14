@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "product": "Server Manage Tool",
+  "technicalInformation": {
+    "features": [
+      "Map-specific server addresses in Project Settings.",
+      "Project Setting and Local Launch modes during Play In Editor.",
+      "All-port UDP preflight, expected-versus-actual port validation, and managed-process cleanup.",
+      "Blueprint nodes for Get Server Address and Request Server Exit."
+    ],
+    "codeModules": [
+      { "name": "ServerModePlayMenu", "type": "Editor", "description": "Editor Play menu, PIE lifecycle, local server launch, UDP preflight, and managed cleanup." },
+      { "name": "ServerInfoSettingsModule", "type": "Runtime", "description": "Runtime project settings and server-list data." },
+      { "name": "ServerManageLibrary", "type": "Runtime", "description": "Runtime Blueprint address resolution, server-exit request, and port validation API." }
+    ],
+    "numberOfBlueprints": 0,
+    "numberOfCppClasses": 3,
+    "networkReplicated": false,
+    "networkReplicationNotes": "The plugin does not provide network replication. Client connection, gameplay networking, and replication remain the responsibility of the host project.",
+    "supportedDevelopmentPlatforms": ["Win64"],
+    "supportedTargetBuildPlatforms": ["Win64"],
+    "dependencies": [],
+    "prerequisites": ["Unreal Engine 5.8", "Windows 64-bit Unreal project", "A project that provides its intended -server behavior for Local Launch"],
+    "documentationUrl": "https://metyatech.github.io/unreal-plugin-docs/server-manage-tool/",
+    "exampleProjectUrl": null,
+    "exampleProjectNotes": "A separate example project is not required; the package includes QuickStart.txt and Docs/UserGuide/index.md, and the public documentation covers setup and use.",
+    "additionalNotes": "Code Plugin for Editor/PIE workflows. The plugin does not build, package, deploy, or host production servers, and does not include a dedicated TargetType.Server executable."
+  }
+}

@@ -34,7 +34,7 @@
 | USTRUCT declarations | 1 |
 | BlueprintCallable functions | 2 |
 | Plugin content files in public release ZIP | 1 |
-| Packaged documentation files | 1 |
+| Packaged documentation files | 8 |
 | Public release ZIP file count | 34 |
 | Public release ZIP bytes | 169,758 |
 | Public release ZIP uncompressed bytes | 350,308 |

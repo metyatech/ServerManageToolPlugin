@@ -1,5 +1,6 @@
 {
   "schema_version": "1.0",
+  "listing_id": "42e5c3b5-36c3-4a91-ba59-8101812e62c3",
   "product": "Server Manage Tool",
   "version": "1.1.2",
   "title": "Server Manage Tool",
@@ -39,12 +40,12 @@
   "promotional_content": false,
   "forum_post": false,
   "activation": "Manual activation",
-  "project_file_link": "https://github.com/metyatech/ServerManageToolPlugin/releases/latest/download/ServerManageTool-Fab-Current.zip",
+  "project_file_link": "https://github.com/metyatech/ServerManageToolPlugin/releases/download/v1.1.2/ServerManageTool_1.1.2_UE5.8_Win64.zip",
   "documentation_url": "https://metyatech.github.io/unreal-plugin-docs/server-manage-tool/",
   "support_url": "https://github.com/metyatech/ServerManageToolPlugin/issues",
   "source_repository_url": "https://github.com/metyatech/ServerManageToolPlugin",
-  "release_url": "https://github.com/metyatech/ServerManageToolPlugin/releases/latest/download/ServerManageTool-Fab-Current.zip",
-  "public_release_sha256": "C1A043C3388520446DAB93B40FEFD6CE0E05F87D94544BB28A14B98098601443",
+  "release_url": "https://github.com/metyatech/ServerManageToolPlugin/releases/download/v1.1.2/ServerManageTool_1.1.2_UE5.8_Win64.zip",
+  "public_release_sha256": "C67088C2262A6728F8763A4391A27BE4215855241C497428E2D88F05AA87579D",
   "source_disclosure_text": "The source repository and prebuilt releases are publicly accessible for inspection. The repository does not grant an open-source license.\n\nPurchases through Fab are provided under the Fab Standard License and support continued development and maintenance.",
   "media_order": [
     "Marketing/Fab/ServerManageTool/1.1.2/final/ServerManageTool-Thumbnail.jpg",
